@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习</title>
+
+    <script type="text/javascript" src="../static/scripts/jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="../static/scripts/vue.js"></script>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" type="text/css" href="../static/element-ui/index.css">
+    <!-- 引入组件库 -->
+    <script type="text/javascript" src="../static/element-ui/index.js"></script>
+</head>
+
+<body>
+    <div id="app">{{allpages}}
+
+    </div>
+    <script>
+        // mustache语法
+        // v-mode v-for @click事件监听
+
+        // 二.插值语法
+        // mustache语法
+        // v-once
+        // v-html
+        // v-Text
+        // v-cloak:斗篷 
+
+        // 三.v-bind
+
+        let ap = new Vue({
+            el: "#app",
+            data: { books: [133, 22, 55, 46, 66, 77, 91, 66] },
+            computed: {
+                allpages: function () {
+                    let page = 0;
+                    for (let i = 0; i < this.books.length; i++) {
+                        page += this.books[i]
+                    }
+                    return page
+                }
+
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>
