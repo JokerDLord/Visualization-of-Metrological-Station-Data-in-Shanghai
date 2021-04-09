@@ -97,7 +97,7 @@ def getStaSata():
 
         content_dic[stationname] = stations_datas
     
-    print(content_dic)
+    # print(content_dic)
 
     return json.dumps({'success': True, 'contents': content_dic})
 
