@@ -36,10 +36,9 @@
 </head>
 
 <body onLoad="onLoad()">
-  <div id="basemap" class="base1">
+  <div id="basemap" class="base1"></div>
 
-    <!-- 这是一个卫星影像切换的按钮 -->
-  </div>
+  <!-- 这是一个卫星影像切换的按钮 -->
   <div class="transbase" id="switchbt">
     <el-switch v-model="value" active-text='卫星影像' inactive-text='' @change='changelay(value)'></el-switch>
   </div>
@@ -58,7 +57,7 @@
       </template>
       <el-submenu index="1">
         <template slot="title">
-          <i class="el-icon-location"></i>
+          <i class="el-icon-menu"></i>
           <span>用户未登录</span>
         </template>
         <el-menu-item-group>
@@ -75,7 +74,7 @@
         </el-submenu>
       </el-submenu>
       <el-menu-item index="2" v-on:click="showStation">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-location"></i>
         <span slot="title">站点显示</span>
       </el-menu-item>
       <el-menu-item index="3" disabled>
@@ -89,6 +88,46 @@
     </el-menu>
   </el-col>
   </el-row>
+  <!-- 定义一个站点label条 -->
+  <div class="aqi-labels" id="class-lable">
+    <table>
+      <tbody>
+        <tr>
+          <td style="background-color:#009966">
+            <el-popover placement="top-start" title="优" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数为0－50，空气质量级别为I级，空气质量状况属于优。此时不存在空气污染问题，对公众的健康没有任何危害。">
+              <el-button style="background-color:#009966;color:white;border:1px solid #009966;padding:0px;" class = "aqi-label-button" slot="reference">优</el-button>
+            </el-popover>
+          </td>
+          <td>
+            <el-popover placement="top-start" title="良" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数为51－100，空气质量级别为Ⅱ级，空气质量状况属于良。此时空气质量被认为是可以接受的，除极少数对某种污染物特别敏感的人以外，对公众健康没有危害。">
+              <el-button style="background-color:#ffde33;color:white;border:1px solid #ffde33;padding:0px;" class = "aqi-label-button" slot="reference">良</el-button>
+          </td>
+          <td>
+            <el-popover placement="top-start" title="轻度污染" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数为101－150，空气质量级别为Ⅲ⑴级，空气质量状况属于轻微污染。此时，对污染物比较敏感的人群，例如儿童和老年人、呼吸道疾病或心脏病患者，以及喜爱户外活动的人，他们的健康状况会受到影响，但对健康人群基本没有影响。">
+              <el-button style="background-color:#ff9933;color:white;border:1px solid #ff9933;padding:0px;" class = "aqi-label-button" slot="reference">轻度污染</el-button>
+          </td>
+          <td>
+            <el-popover placement="top-start" title="中度污染" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数为151－200，空气质量级别为Ⅲ⑵级，空气质量状况属于轻度污染。此时，几乎每个人的健康都会受到影响，对敏感人群的不利影响尤为明显。">
+              <el-button style="background-color:#cc0033;color:white;border:1px solid #cc0033;padding:0px;" class = "aqi-label-button" slot="reference">中度污染</el-button>
+          </td>
+          <td>
+            <el-popover placement="top-start" title="重度污染" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数为201－300，空气质量级别为Ⅳ级，空气质量状况属于中度重污染。此时，每个人的健康都会受到比较严重的影响。">
+              <el-button style="background-color:#660099;color:white;border:1px solid #660099;padding:0px;" class = "aqi-label-button" slot="reference">重度污染</el-button>
+          </td>
+          <td>
+            <el-popover placement="top-start" title="严重污染" width=200 trigger="hover" class = "aqi-label"
+              content="空气污染指数大于300，空气质量级别为V级，空气质量状况属于重度污染。此时，所有人的健康都会受到严重影响。">
+              <el-button style="background-color:#7e0023;color:white;border:1px solid #7e0023;padding:0px;" class = "aqi-label-button" slot="reference">严重污染</el-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 
 </body>

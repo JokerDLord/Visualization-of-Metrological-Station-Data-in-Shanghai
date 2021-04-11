@@ -71,8 +71,47 @@ div {margin:0; padding:0; border:0;}
 .station-annotation-div-icon
 {
 	color:rgb(255, 255, 255);
-	font-size: 18px;
+	font-size: 15px;
 	/* font-weight:bold; */
 	font-family:"Microsoft YaHei"
 
+}
+
+.aqi-labels
+{
+	z-index:99;
+	position:fixed;
+	/* height:30px; */
+	width:480px;
+	bottom:0px;
+	right: 140px;
+	margin:0; padding:0; border:0;
+	/* background-color: antiquewhite; */
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 14px;
+	border-spacing: 2px;
+}
+/* 后代元素选择器 */
+.aqi-labels td
+{
+	/* display: table-cell; */
+	height:26px;
+	width:80px;
+	background-color:burlywood;
+	border-radius: 4px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 0px;
+    margin: 0px;
+	overflow:hidden;
+}
+.aqi-label-button
+{
+	outline:none;
+	border:0px;
+	height:26px;
+	width:80px;
+	border-radius: 4px;
 }

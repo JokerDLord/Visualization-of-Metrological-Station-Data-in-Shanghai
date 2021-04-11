@@ -8,6 +8,7 @@ let mylongitude;
 let myaccuracy;
 
 var markers = new Array();
+var divmarkers = new Array();
 
 let metstationicon = L.icon({
     iconUrl: '../static/Markers/气象站-蓝.png',
@@ -103,6 +104,16 @@ function showStation(stationinfo){
             let marker = L.marker([lat, lon], { icon: tmpicon }).addTo(mymap)
             marker.name = singlestation.name//
             markers[count] = marker
+
+            let mydivIcon = L.divIcon({
+                html:aqi,
+                className:'station-annotation-div-icon',
+                iconSize: 70,
+                iconAnchor: [10, 35]
+            })
+            let divmarker = L.marker([lat, lon],{icon: mydivIcon}).addTo(mymap)
+            divmarker.name = singlestation.name//
+            divmarkers[count] = divmarker
             
             count++
         }
@@ -147,14 +158,14 @@ function onLoad() {
     mymap.addLayer(baseLayer);
 
 
-    L.marker([31.23138, 121.469897], { icon: metstationicon }).addTo(mymap)
-    let mydivIcon = L.divIcon({
-        html:"45",
-        className:'station-annotation-div-icon',
-        iconSize: 70,
-        iconAnchor: [10, 35]
-    })
-    L.marker([31.23138, 121.469897],{icon: mydivIcon}).addTo(mymap)
+    // L.marker([31.23138, 121.469897], { icon: metstationicon }).addTo(mymap)
+    // let mydivIcon = L.divIcon({
+    //     html:"45",
+    //     className:'station-annotation-div-icon',
+    //     iconSize: 70,
+    //     iconAnchor: [10, 35]
+    // })
+    // L.marker([31.23138, 121.469897],{icon: mydivIcon}).addTo(mymap)
 
     let switchbtn = new Vue({
         el: '#switchbt',
@@ -228,6 +239,7 @@ function onLoad() {
                     for(let i=0;i<markers.length;i++)
                     {
                         markers[i].remove()
+                        divmarkers[i].remove()
                     }
                 }
 
@@ -254,6 +266,18 @@ function onLoad() {
             console.log(this.info.name, this.info.data)
             console.log(this.info);
         }
+    })
+    let aqilabel = new Vue({
+        el:"#class-lable",
+        data:{
+            ifshow:true,
+            content:"优秀",
+            visible:false
+        },
+        methods:{
+            
+        }
+
     })
 
     // let usrlogin = new Vue({
