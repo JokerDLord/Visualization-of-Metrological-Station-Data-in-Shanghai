@@ -41,6 +41,8 @@ station_db = {'十五厂': '上海第十五制药厂',
 
 dbpath = "../dbsetup/dbs/"
 stalonlat = {}
+Paras = ["time", "name", "AQI", "quantity",
+         "PM25", "PM10", "CO", "NO2", "O3", "SO2"]
 
 
 def getLonlat():
@@ -53,9 +55,35 @@ def getLonlat():
             stalonlat[staname] = [eval(lon), eval(lat)]
         # print(stalonlat)
 
+
 @app.route('/')
 def cover():
     return render_template('mainmap.html')
+
+# 查询单个站点的历史数据 6hours
+@app.route('/queryStation', methods=['POST'])
+def querystation():
+    get_json = request.get_json()
+    stationname = get_json['ID']
+    # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......}}}的形式
+    content_dic = {}
+    with sql.connect(dbpath+stationname+'.db') as conn:
+        cur = conn.cursor()
+        sqlsen = "select * from {} order by rowid desc limit 0,6".format(station[stationname]) #这里是选择最近的6小时的数据
+        cur.execute(sqlsen)
+        values = cur.fetchall()
+        for i in range(6):
+            singletimedata = {}
+            singleitem = values[i]
+            time = singleitem[0] #单个条目的时间
+
+            for (index, element) in enumerate(Paras):
+                if not element:
+                        element = '-'  # 部分不存在的值替换为-
+                singletimedata[element] = singleitem[index]
+            content_dic[time] = singletimedata
+    
+    return json.dumps({'success': True, 'stationname':stationname, 'contents': content_dic})
 
 
 @app.route('/try', methods=['POST'])
@@ -80,8 +108,7 @@ def getStaSata():
     # 传到前端的数据采用{"success":bool,"time":string,
     # "content":{"staionname1":{"lonlat":[longitude,latitude],其他指标},"staionname1":[]}}的形式
     content_dic = {}
-    Paras = ["time", "name", "AQI", "quantity",
-             "PM25", "PM10", "CO", "NO2", "O3", "SO2"]
+
     for stationname in station.keys():
         stations_datas = {}
         stations_datas["lonlat"] = stalonlat[stationname]
@@ -96,7 +123,7 @@ def getStaSata():
                 stations_datas[element] = values[index]
 
         content_dic[stationname] = stations_datas
-    
+
     # print(content_dic)
 
     return json.dumps({'success': True, 'contents': content_dic})

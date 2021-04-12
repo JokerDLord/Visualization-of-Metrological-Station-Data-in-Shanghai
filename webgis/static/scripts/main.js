@@ -7,8 +7,11 @@ let mylatitude;
 let mylongitude;
 let myaccuracy;
 
+let singlestationData;//点击单个站点后会将查询的数据
+
 var markers = new Array();
 var divmarkers = new Array();
+
 
 let metstationicon = L.icon({
     iconUrl: '../static/Markers/气象站-蓝.png',
@@ -73,6 +76,17 @@ function showPosition(position) {
     myaccuracy = position.coords.accuracy;
 }
 
+function querysingleHistory(name){
+    axios.post("/queryStation", {
+        ID: name
+    })
+        .then(response => (singlestationData = response.data))
+        .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    console.log(singlestationData);
+}
+
 
 // 将后端传来的数据做成marker显示
 function showStation(stationinfo){
@@ -86,6 +100,7 @@ function showStation(stationinfo){
             singlestation = contents[i]
             let [lon,lat] = singlestation.lonlat
             let aqi = singlestation.AQI
+            let name = singlestation.name
             let tmpicon;
             if(aqi<=50){
                 tmpicon = youicon;
@@ -101,7 +116,8 @@ function showStation(stationinfo){
                 tmpicon = yanzhongicon
             }
 
-            let marker = L.marker([lat, lon], { icon: tmpicon }).addTo(mymap)
+            let marker = L.marker([lat, lon], { icon: tmpicon })
+            marker.addTo(mymap)
             marker.name = singlestation.name//
             markers[count] = marker
 
@@ -111,8 +127,30 @@ function showStation(stationinfo){
                 iconSize: 70,
                 iconAnchor: [10, 35]
             })
+
             let divmarker = L.marker([lat, lon],{icon: mydivIcon}).addTo(mymap)
-            divmarker.name = singlestation.name//
+            let divline = "<hr align=center color=#987cb9 size=1>"
+            let clickicon = "<img src='../static/Markers/clickcli.png' style='width:30px;height:30px;padding:0px;margin:0px;vertical-align:middle;'><img>"
+            let toolTipcontent = "<h2 align='center'>"+singlestation.name+"</h2>"+divline+"<p class='update-tip'>updated one hour ago at "+singlestation.time+":00</p>"+divline+
+            "<p font-size='15'>数值单位：μg/m3(CO为mg/m3)</p><p>PM2.5 : "+singlestation.PM25+"<br>PM10 : "+singlestation.PM10+"<br>O₃ : "+singlestation.O3+"<br>NO₂ : "+singlestation.NO2+"<br>SO₂ : "
+            +singlestation.NO2+"<br>CO : "+singlestation.CO+"</p>"+divline+"<p align='center'>"+clickicon+"点击获取更多信息"+clickicon+"</p>"+divline+"<p align='center'>source:上海市环境监测中心</p>"
+
+            divmarker.bindTooltip(toolTipcontent,{
+                maxWidth:300,
+                minWidth:50,
+                sticky:true,
+                // offset:[10,10],
+                opacity:0.8,
+                className:"marker-tootip"
+            })
+            //绑定marker点击事件
+            divmarker.on('click',function(e){
+                let latlon = this.getLatLng()
+                console.log(latlon)
+                mymap.flyTo(latlon,zoom=14,options={duration:0.8})
+                querysingleHistory(name)
+            })
+            divmarker.name = name//
             divmarkers[count] = divmarker
             
             count++
