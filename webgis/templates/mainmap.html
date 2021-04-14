@@ -25,7 +25,7 @@
   <script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
   <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
   <script type="text/javascript" src="../static/scripts/leaflet.ChineseTmsProviders.js"></script>
-  <script type="text/javascript" src="../static/scripts/echarts/echarts.min.js"></script>
+  <script type="text/javascript" src="../static/scripts/echarts/echarts.js"></script>
 
   <script type="text/javascript" src="../static/scripts/main.js"></script>
 
@@ -129,6 +129,16 @@
       </tbody>
     </table>
   </div>
+  <!-- 定义站点弹出卡片 -->
+  <el-card class="box-card" id ="singlestation-box-card" v-show="showcard"> 
+    <div slot="header" class="clearfix">
+      站点信息
+      <el-button style="float: right; padding: 3px 0" type="text" @click="closeCard">关闭</el-button>
+    </div>
+    <div v-for="o in 2" :key="o" :class="'text-item'+o" :id="'text-item'+o" style="height: 300px;width:450px" >
+    </div>
+  </el-card>
+
 
 
 </body>

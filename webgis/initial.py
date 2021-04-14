@@ -60,19 +60,21 @@ def getLonlat():
 def cover():
     return render_template('mainmap.html')
 
-# 查询单个站点的历史数据 6hours
-@app.route('/queryStation', methods=['POST'])
+# 查询单个站点的历史数据 8hours
+@app.route('/queryStation', methods=['post'])
 def querystation():
     get_json = request.get_json()
     stationname = get_json['ID']
+    if stationname in station_db.keys():
+        stationname = station_db[stationname]
     # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......}}}的形式
     content_dic = {}
     with sql.connect(dbpath+stationname+'.db') as conn:
         cur = conn.cursor()
-        sqlsen = "select * from {} order by rowid desc limit 0,6".format(station[stationname]) #这里是选择最近的6小时的数据
+        sqlsen = "select * from {} order by rowid desc limit 0,8".format(station[stationname]) #这里是选择最近的6小时的数据
         cur.execute(sqlsen)
         values = cur.fetchall()
-        for i in range(6):
+        for i in range(8):
             singletimedata = {}
             singleitem = values[i]
             time = singleitem[0] #单个条目的时间
