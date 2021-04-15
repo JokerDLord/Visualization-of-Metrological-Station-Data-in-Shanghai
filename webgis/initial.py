@@ -61,17 +61,18 @@ def cover():
     return render_template('mainmap.html')
 
 # 查询单个站点的历史数据 8hours
-@app.route('/queryStation', methods=['post'])
+@app.route('/queryStation', methods=['get'])
 def querystation():
-    get_json = request.get_json()
-    stationname = get_json['ID']
+    get_args = request.args.get("ID")
+    print(get_args)
+    stationname = get_args
     if stationname in station_db.keys():
         stationname = station_db[stationname]
     # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......}}}的形式
     content_dic = {}
     with sql.connect(dbpath+stationname+'.db') as conn:
         cur = conn.cursor()
-        sqlsen = "select * from {} order by rowid desc limit 0,8".format(station[stationname]) #这里是选择最近的6小时的数据
+        sqlsen = "select * from {} order by rowid desc limit 0,8".format(station[stationname]) #这里是选择最近的8小时的数据
         cur.execute(sqlsen)
         values = cur.fetchall()
         for i in range(8):

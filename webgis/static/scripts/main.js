@@ -9,10 +9,13 @@ let myaccuracy;
 
 let singlestationData;//点击单个站点后会将查询的数据
 let boxcard;
+let statisticCarousel;//统计图表走马灯
 
 var markers = new Array();
 var divmarkers = new Array();
 var aqiChartstorage;
+var aqiChartstorage2;
+
 
 
 
@@ -89,42 +92,70 @@ function clearDom(dom) {
 function getXdataormore(singlestationData) {
     let timelst = Array()
     let aqilst = Array()
+    let colst = Array()
+    let no2lst = Array()
+    let o3lst = Array()
+    let pm10lst = Array()
+    let pm25lst = Array()
+    let so2lst = Array()
     contents = singlestationData.contents
     for (let i in contents) {
         if (i != '__proto__') {
-            timelst.push(i+':00')
+            timelst.push(i + ':00')
             aqilst.push(contents[i].AQI)
+            colst.push(contents[i].CO)
+            no2lst.push(contents[i].NO2)
+            o3lst.push(contents[i].O3)
+            pm10lst.push(contents[i].PM10)
+            pm25lst.push(contents[i].PM25)
+            so2lst.push(contents[i].SO2)
         }
     }
     timelst.reverse()
     aqilst.reverse()
+    colst.reverse()
+    no2lst.reverse()
+    o3lst.reverse()
+    pm10lst.reverse()
+    pm25lst.reverse()
+    so2lst.reverse()
     console.log(timelst)
     console.log(aqilst)
 
-    return [timelst, aqilst]
+    return [timelst, aqilst, colst, no2lst, o3lst, pm10lst, pm25lst, so2lst]
 
 
 }
 
 // 显示单个站点的echart图表 有一下几种形式
 function showsingleEchart(singlestationData) {
-    if (!boxcard.showcard) boxcard.showcard = !boxcard.showcard // 如果未显示，便显示出来，如果已经显示出来了，便不更改该卡片显示状态即可
+    if (!boxcard.showcard)
+        boxcard.showcard = !boxcard.showcard // 如果未显示，便显示出来，如果已经显示出来了，便不更改该卡片显示状态即可
     let stationname = singlestationData.stationname
-    let [xdata, aqidata] = getXdataormore(singlestationData)
+    let [xdata, aqidata, codata,no2data, o3data, pm10data, pm25data, so2data] = getXdataormore(singlestationData)
 
 
     let chartDom = document.getElementById('text-item1');
+    let chartDom2 = document.getElementById('text-item2');
     // clearDom(chartDom)//每次绘图都先清空dom上所有的元素 //我们换另一种方法 用echart的方法销毁原图表
     let aqiChart = aqiChartstorage;
+    let aqiChart2 = aqiChartstorage;
+    
     if (aqiChart != null && aqiChart != "" && aqiChart != undefined) {
         aqiChart.dispose();//销毁
     }
+    if (aqiChart2 != null && aqiChart2 != "" && aqiChart2 != undefined) {
+        aqiChart2.dispose();//销毁
+    }
+
     aqiChart = echarts.init(chartDom);
+    aqiChart2 = echarts.init(chartDom2);
+
     let option;
     aqiChart.setOption(
         option = {
             title: {
-                text: '8小时内' + stationname + 'AQI数据',
+                text: '8小时内' + stationname + 'AQI及其他指标数据',
                 left: '1%'
             },
             tooltip: {
@@ -159,7 +190,7 @@ function showsingleEchart(singlestationData) {
             // }],
             visualMap: {
                 top: 50,
-                right: 10,
+                right: 0,
                 pieces: [{
                     gt: 0,
                     lte: 50,
@@ -215,23 +246,230 @@ function showsingleEchart(singlestationData) {
     if (option && typeof option === 'object') {
         aqiChart.setOption(option);
     }
+    option && aqiChart.setOption(option);
     aqiChartstorage = aqiChart;
+
+    //chart2的设置
+    let app = {};
+    let option2;
+    let posList = [
+        'left', 'right', 'top', 'bottom',
+        'inside',
+        'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+        'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+    ];
+    
+    app.configParameters = {
+        rotate: {
+            min: -90,
+            max: 90
+        },
+        align: {
+            options: {
+                left: 'left',
+                center: 'center',
+                right: 'right'
+            }
+        },
+        verticalAlign: {
+            options: {
+                top: 'top',
+                middle: 'middle',
+                bottom: 'bottom'
+            }
+        },
+        position: {
+            options: posList.reduce(function (map, pos) {
+                map[pos] = pos;
+                return map;
+            }, {})
+        },
+        distance: {
+            min: 0,
+            max: 100
+        }
+    };
+    
+    app.config = {
+        rotate: 90,
+        align: 'left',
+        verticalAlign: 'middle',
+        position: 'insideBottom',
+        distance: 12,
+        onChange: function () {
+            var labelOption = {
+                normal: {
+                    rotate: app.config.rotate,
+                    align: app.config.align,
+                    verticalAlign: app.config.verticalAlign,
+                    position: app.config.position,
+                    distance: app.config.distance
+                }
+            };
+            myChart.setOption({
+                series: [{
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }, {
+                    label: labelOption
+                }]
+            });
+        }
+    };
+    
+    
+    var labelOption = {
+        show: true,
+        position: app.config.position,
+        distance: app.config.distance,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        rotate: app.config.rotate,
+        formatter: '{c}  ',//{name|{a}}
+        fontSize: 12,
+        rich: {
+            name: {
+            }
+        }
+    };
+    
+    option2 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['CO', 'NO2', '03', 'PM10', 'PM25','SO2']
+        },
+        grid: {
+            left: '5%',
+            right: '5%',
+            bottom: '8%'
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            left: 'right',
+            top: 'center',
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {show: false},
+                data: xdata
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: 'CO',
+                type: 'bar',
+                barGap: 0,
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: codata
+            },
+            {
+                name: 'NO2',
+                type: 'bar',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: no2data
+            },
+            {
+                name: '03',
+                type: 'bar',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: o3data
+            },
+            {
+                name: 'PM10',
+                type: 'bar',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: pm10data
+            },
+            {
+                name: 'PM25',
+                type: 'bar',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: pm25data
+            },
+            {
+                name: 'SO2',
+                type: 'bar',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: so2data
+            }
+        ]
+    };
+    
+    option2 && aqiChart2.setOption(option2);
+    aqiChartstorage2 = aqiChart2;
+    
+    
 }
 
 
 function querysingleHistory(name) {
-    axios.post("/queryStation", {
-        ID: name
+    // axios.post("/queryStation", {
+    //     ID: name
+    // })
+    //     .then(response => (singlestationData = response.data))
+    //     .catch(function (error) { // 请求失败处理
+    //         console.log(error);
+    //     }); //此处换用jquery进行数据交互 
+    let para = { "ID": name }
+    $.ajax({
+        url: "/queryStation",
+        methods: "get",
+        data: para,
+        // contentType: 'application/json',
+        success: function (response) {
+            let resdata = JSON.parse(response)
+            if (resdata.success) {
+                singlestationData = resdata;
+                console.log(singlestationData)
+                showsingleEchart(singlestationData)
+            }
+            else {
+                console.log(resdata.error);
+                return;
+            }
+        }
     })
-        .then(response => (singlestationData = response.data))
-        .catch(function (error) { // 请求失败处理
-            console.log(error);
-        });
 
-    if (singlestationData) {
-        console.log(singlestationData)
-        showsingleEchart(singlestationData)
-    }
 }
 
 
@@ -427,6 +665,9 @@ function onLoad() {
                     }
                 }
 
+            },
+            showStatis(){
+                statisticCarousel.isShow = !statisticCarousel.isShow
             }
 
         },
@@ -495,6 +736,14 @@ function onLoad() {
                     console.log(error);
                 });
         }
+    })
+
+    statisticCarousel = new Vue({
+        el:"#statistic-echarts-carousel",
+        data:{
+            isShow:false
+        },
+        methods:{},
     })
 
 }
