@@ -132,7 +132,7 @@ function showsingleEchart(singlestationData) {
     if (!boxcard.showcard)
         boxcard.showcard = !boxcard.showcard // 如果未显示，便显示出来，如果已经显示出来了，便不更改该卡片显示状态即可
     let stationname = singlestationData.stationname
-    let [xdata, aqidata, codata,no2data, o3data, pm10data, pm25data, so2data] = getXdataormore(singlestationData)
+    let [xdata, aqidata, codata, no2data, o3data, pm10data, pm25data, so2data] = getXdataormore(singlestationData)
 
 
     let chartDom = document.getElementById('text-item1');
@@ -140,7 +140,7 @@ function showsingleEchart(singlestationData) {
     // clearDom(chartDom)//每次绘图都先清空dom上所有的元素 //我们换另一种方法 用echart的方法销毁原图表
     let aqiChart = aqiChartstorage;
     let aqiChart2 = aqiChartstorage;
-    
+
     if (aqiChart != null && aqiChart != "" && aqiChart != undefined) {
         aqiChart.dispose();//销毁
     }
@@ -258,7 +258,7 @@ function showsingleEchart(singlestationData) {
         'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
         'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
     ];
-    
+
     app.configParameters = {
         rotate: {
             min: -90,
@@ -289,7 +289,7 @@ function showsingleEchart(singlestationData) {
             max: 100
         }
     };
-    
+
     app.config = {
         rotate: 90,
         align: 'left',
@@ -319,8 +319,8 @@ function showsingleEchart(singlestationData) {
             });
         }
     };
-    
-    
+
+
     var labelOption = {
         show: true,
         position: app.config.position,
@@ -335,7 +335,7 @@ function showsingleEchart(singlestationData) {
             }
         }
     };
-    
+
     option2 = {
         tooltip: {
             trigger: 'axis',
@@ -344,7 +344,7 @@ function showsingleEchart(singlestationData) {
             }
         },
         legend: {
-            data: ['CO', 'NO2', '03', 'PM10', 'PM25','SO2']
+            data: ['CO', 'NO2', '03', 'PM10', 'PM25', 'SO2']
         },
         grid: {
             left: '5%',
@@ -357,17 +357,17 @@ function showsingleEchart(singlestationData) {
             left: 'right',
             top: 'center',
             feature: {
-                mark: {show: true},
-                dataView: {show: true, readOnly: false},
-                magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-                restore: {show: true},
-                saveAsImage: {show: true}
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                restore: { show: true },
+                saveAsImage: { show: true }
             }
         },
         xAxis: [
             {
                 type: 'category',
-                axisTick: {show: false},
+                axisTick: { show: false },
                 data: xdata
             }
         ],
@@ -434,12 +434,172 @@ function showsingleEchart(singlestationData) {
             }
         ]
     };
-    
+
     option2 && aqiChart2.setOption(option2);
     aqiChartstorage2 = aqiChart2;
-    
-    
+
+
 }
+
+//显示统计数据-雷达图
+function showstatisticEchart(allstationsData) {
+    // time,AQIindex,PM2.5,PM10,CO,NO2,SO2 以此种形式组织数据
+    let divcount = 1 //div选择 注意是从1开始的
+    for (let stationindex in allstationsData) {
+        let singlestationData = new Array()
+        if (stationindex != '__proto__') {
+            let station = allstationsData[stationindex]
+            for (let dtime in station) {
+                let singletimeData = new Array()//单个时间的数据
+                if (dtime != '__proto__') {
+                    let dtimedata = station[dtime]
+                    singletimeData.push(dtimedata.AQI)
+                    singletimeData.push(dtimedata.PM25)
+                    singletimeData.push(dtimedata.PM10)
+                    singletimeData.push(dtimedata.CO)
+                    singletimeData.push(dtimedata.NO2)
+                    singletimeData.push(dtimedata.SO2)
+                    singletimeData.push(dtimedata.time)
+                    singlestationData.push(singletimeData)//每个时间的数据数组都放入最终的站点数据数组中作为rader的数据
+                }
+
+                ////
+            }
+            let statisticchartDom = document.getElementById('radardiv' + divcount);
+            let mystatisChart = echarts.init(statisticchartDom);
+            let option;
+
+            let shanghaistation = singlestationData
+
+            let lineStyle = {
+                normal: {
+                    width: 1,
+                    opacity: 0.5
+                }
+            };
+
+            option = {
+                backgroundColor: 'rgb(84, 92, 100)',
+                title: {
+                    text: stationindex + '24小时站点AQI - 雷达图',
+                    left: 'center',
+                    top: '3%',
+                    textStyle: {
+                        color: '#eee'
+                    }
+                },
+                // legend: {
+                //     bottom: 5,
+                //     data: ['北京', '上海', '广州'],
+                //     itemGap: 20,
+                //     textStyle: {
+                //         color: '#fff',
+                //         fontSize: 14
+                //     },
+                //     selectedMode: 'single'
+                // },
+                // visualMap: {
+                //     show: true,
+                //     left:"10%",
+                //     min: 0,
+                //     max: 20,
+                //     dimension: 6,
+                //     inRange: {
+                //         colorLightness: [0.5, 0.8]
+                //     }
+                // },
+                radar: {
+                    indicator: [
+                        { name: 'AQI', max: 300 },
+                        { name: 'PM2.5', max: 250 },
+                        { name: 'PM10', max: 300 },
+                        { name: 'CO', max: 5 },
+                        { name: 'NO2', max: 200 },
+                        { name: 'SO2', max: 100 }
+                    ],
+                    shape: 'circle',
+                    splitNumber: 5,
+                    name: {
+                        textStyle: {
+                            color: 'rgb(238, 197, 102)'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: [
+                                'rgba(238, 197, 102, 0.5)', 'rgba(238, 197, 102, 0.6)',
+                                'rgba(238, 197, 102, 0.7)', 'rgba(238, 197, 102, 0.8)',
+                                'rgba(238, 197, 102, 0.9)', 'rgba(238, 197, 102, 1)'
+                            ].reverse()
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(238, 197, 102, 0.5)'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: stationindex,
+                        type: 'radar',
+                        lineStyle: lineStyle,
+                        data: shanghaistation,
+                        symbol: 'none',
+                        itemStyle: {
+                            color: '#F9713C' // #F9713C
+                        },
+                        areaStyle: {
+                            opacity: 0.05
+                        }
+                    },
+                    // {
+                    //     name: '上海',
+                    //     type: 'radar',
+                    //     lineStyle: lineStyle,
+                    //     data: dataSH,
+                    //     symbol: 'none',
+                    //     itemStyle: {
+                    //         color: '#B3E4A1'
+                    //     },
+                    //     areaStyle: {
+                    //         opacity: 0.05
+                    //     }
+                    // },
+                    // {
+                    //     name: '广州',
+                    //     type: 'radar',
+                    //     lineStyle: lineStyle,
+                    //     data: dataGZ,
+                    //     symbol: 'none',
+                    //     itemStyle: {
+                    //         color: 'rgb(238, 197, 102)'
+                    //     },
+                    //     areaStyle: {
+                    //         opacity: 0.05
+                    //     }
+                    // }
+                ]
+            };
+
+            option && mystatisChart.setOption(option);
+            window.onresize = function () {
+                mystatisChart.resize();
+                //myChart1.resize();    //若有多个图表变动，可多写
+
+            }
+
+            divcount++
+        }
+
+    }
+
+}
+
+
 
 
 function querysingleHistory(name) {
@@ -548,6 +708,22 @@ function showStation(stationinfo) {
 
 
 function onLoad() {
+
+    //加载天气查询插件
+    AMap.plugin('AMap.Weather', function () {
+        //创建天气查询实例
+        var weather = new AMap.Weather();
+
+        // //执行实时天气信息查询
+        // weather.getLive('上海市', function (err, data) {
+        //     console.log(err, data);
+        // });
+        //执行未来天气信息查询
+        weather.getForecast('上海市', function (err, data) {
+            console.log(err, data);
+        });
+    });
+
     // getLocation()// 获取使用者的位置
 
     mymap = L.map("basemap", {
@@ -666,10 +842,39 @@ function onLoad() {
                 }
 
             },
-            showStatis(){
+            showStatis() {
                 statisticCarousel.isShow = !statisticCarousel.isShow
-            }
 
+                //如果此时isShow，则执行数据获取功能
+                if (statisticCarousel.isShow) {
+                    $.ajax({
+                        url: "/queryallStations",
+                        methods: "get",
+                        data: { hours: 24 },
+                        // contentType: 'application/json',
+                        success: function (response) {
+                            let resdata = JSON.parse(response)
+                            if (resdata.success) {
+                                allstationsData = resdata.contents;
+                                console.log(allstationsData)
+                                showstatisticEchart(allstationsData)
+                            }
+                            else {
+                                console.log(resdata.error);
+                                return;
+                            }
+                        }
+                    })
+                    $("#basemap").css({
+                        filter: "blur(5px)"
+                    })
+
+                } else {
+                    $("#basemap").css({
+                        filter: ""
+                    })
+                }
+            }
         },
         mounted() {
             axios.post("/stationdata", { aiming: "right" })
@@ -738,12 +943,26 @@ function onLoad() {
         }
     })
 
+    //统计信息功能的走马灯
     statisticCarousel = new Vue({
-        el:"#statistic-echarts-carousel",
-        data:{
-            isShow:false
+        el: "#statistic-echarts-carousel",
+        data: {
+            isShow: false,
+            fade: "这里放上啥？"
         },
-        methods:{},
+        methods: {},
     })
+
+    // 右上角的天气信息按钮
+    const weatherButton = new Vue({
+        el: "#weather-button",
+        data: {},
+        methods: {
+            showweatherInfo() {
+
+            }
+        }
+    })
+
 
 }

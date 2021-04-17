@@ -61,6 +61,8 @@ def cover():
     return render_template('mainmap.html')
 
 # 查询单个站点的历史数据 8hours
+
+
 @app.route('/queryStation', methods=['get'])
 def querystation():
     get_args = request.args.get("ID")
@@ -68,25 +70,56 @@ def querystation():
     stationname = get_args
     if stationname in station_db.keys():
         stationname = station_db[stationname]
-    # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......}}}的形式
+    # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......}}的形式
     content_dic = {}
     with sql.connect(dbpath+stationname+'.db') as conn:
         cur = conn.cursor()
-        sqlsen = "select * from {} order by rowid desc limit 0,8".format(station[stationname]) #这里是选择最近的8小时的数据
+        # 这里是选择最近的8小时的数据
+        sqlsen = "select * from {} order by rowid desc limit 0,8".format(
+            station[stationname])
         cur.execute(sqlsen)
         values = cur.fetchall()
         for i in range(8):
             singletimedata = {}
             singleitem = values[i]
-            time = singleitem[0] #单个条目的时间
+            time = singleitem[0]  # 单个条目的时间
 
             for (index, element) in enumerate(Paras):
-                if not element:
-                        element = '-'  # 部分不存在的值替换为-
+                # if not element:
+                #     element = '-'  # 部分不存在的值替换为-
                 singletimedata[element] = singleitem[index]
             content_dic[time] = singletimedata
+
+    return json.dumps({'success': True, 'stationname': stationname, 'contents': content_dic})
+
+
+@app.route('/queryallStations', methods=['get'])
+def queryallStations():
+    get_args = request.args.get("hours")
+    print(get_args)
+    queryhours = int(get_args)
+    # "content":{"staionname1":{time1:{各项指标}, time2:{}, ......},"stationname2":{}}的形式
+    content_dic = {}
+    for stationname in station.keys():
+        station_datas = {}
+        with sql.connect(dbpath+stationname+'.db') as conn:
+            cur = conn.cursor()
+            cur.execute(
+                'select * from {} order by rowid desc limit 0,{}'.format(station[stationname],queryhours))
+            values = cur.fetchall()
+            for i in range(queryhours):
+                singletimedata={}
+                singleitem = values[i]
+                time = singleitem[0]#取出每一行的时间
+
+                for (index, element) in enumerate(Paras):
+                    # if not element:
+                    #     element = '-'  # 部分不存在的值替换为-
+                    singletimedata[element] = singleitem[index]
+                station_datas[time] = singletimedata
+        content_dic[stationname] = station_datas
     
-    return json.dumps({'success': True, 'stationname':stationname, 'contents': content_dic})
+    return json.dumps({'success':True,'contents':content_dic})
 
 
 @app.route('/try', methods=['POST'])
@@ -121,8 +154,8 @@ def getStaSata():
                 'select * from {} order by rowid desc limit 0,1'.format(station[stationname]))
             values = cur.fetchall()[0]
             for (index, element) in enumerate(Paras):
-                if not element:
-                    element = '-'  # 部分不存在的值替换为-
+                # if not element:
+                #     element = '-'  # 部分不存在的值替换为-
                 stations_datas[element] = values[index]
 
         content_dic[stationname] = stations_datas

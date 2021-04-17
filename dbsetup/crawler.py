@@ -147,7 +147,7 @@ def Craw():
     driver = webdriver.Firefox(options = options)
     print(2)
     GetPage(driver)
-    driver.quit() #注意一定释放浏览器资源 不然电脑会爆炸
+    driver.quit() #注意一定释放浏览器资源 不然电脑会爆炸(●'◡'●)
     
 
 if __name__ == '__main__':

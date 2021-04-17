@@ -26,6 +26,8 @@
   <script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
   <script type="text/javascript" src="../static/scripts/leaflet.ChineseTmsProviders.js"></script>
   <script type="text/javascript" src="../static/scripts/echarts/echarts.js"></script>
+  <script type="text/javascript"
+    src="https://webapi.amap.com/maps?v=1.4.15&key=06ae639ea3db42b29d6dfbe592ebaa9f"></script>
 
   <script type="text/javascript" src="../static/scripts/main.js"></script>
 
@@ -37,7 +39,11 @@
 </head>
 
 <body onLoad="onLoad()">
-  <div id="basemap" class="base1"></div>
+  <div id="basemap" class="base1">
+  <el-button type="success" icon="el-icon-sunny" @click="showweatherInfo" id="weather-button" circle></el-button>
+  <div class="weather-info"> 你说说为啥 </div>
+
+  </div>
 
   <!-- 这是一个卫星影像切换的按钮 -->
   <div class="transbase" id="switchbt">
@@ -136,6 +142,7 @@
     </table>
   </div>
   <!-- 定义站点弹出卡片 -->
+
   <el-card class="box-card" id="singlestation-box-card" v-show="showcard">
     <div slot="header" class="clearfix">
       站点信息
@@ -145,18 +152,23 @@
     </div>
   </el-card>
 
-  <transition name="fade"><!-- ?????为何不行 -->
+  <transition name="el-fade-in-linear">
     <div class="statistic-echarts" id="statistic-echarts-carousel" v-show="isShow">
 
-      <el-carousel :interval="5000" arrow="always" indicator-position="outside" style="height: 100%;width: 100%">
+      <!--?????为何不行 -->
+      <el-carousel :interval="5000" arrow="always" indicator-position="outside"
+        style="height: 100%;width: 100%;border-radius: 10px;">
         <el-carousel-item v-for="item in 19" :key="item">
           <!-- 总共有十九个气象站点 -->
-          <h3>{{ item }}</h3>
+          <div :class="'radardiv'+item" :id="'radardiv'+item" style="height:100%;width:100%;"></div>
         </el-carousel-item>
       </el-carousel>
 
     </div>
   </transition>
+  
+
+
 
 
 

@@ -17,6 +17,47 @@ div {margin:0; padding:0; border:0;}
 	/* width:50px; */
 	
 }
+#weather-button
+{
+	z-index:999;
+	position: fixed;
+	right:10px;
+	top: 50px;
+}
+
+.weather-info
+{
+	z-index:999;;
+	position:fixed;
+	right:10px;
+	top:120px;
+	width: 250px;
+	height: 300px;
+	border-radius: 8px;
+	box-shadow: 0 4px 14px 0 rgba(0,0,0,.1);
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	/* background:rgba(255, 255, 255, .3); */
+}
+.weather-info::before
+{
+	content:'';
+	position:fixed;
+	background:inherit;
+
+	/* background:url(../img/wind2.png); */
+	/* background-size: cover; */
+	/* background-attachment: fixed; */
+	border-radius: 8px;
+	right:10px;
+	top:120px;
+	width: 250px;
+	height: 300px;
+	filter: blur(5px);
+	z-index: 1;
+	/* margin: -30px; */
+}
 
 /* .transspan
 {
@@ -31,7 +72,7 @@ div {margin:0; padding:0; border:0;}
 
 
 #basemap{
-	z-index:1;
+	z-index:0;
     position: absolute;
 	width : 100%;
 	height : 100%;
@@ -117,7 +158,7 @@ div {margin:0; padding:0; border:0;}
 }
 .marker-tooltip
 {
-	background-color:rgba(0, 0, 0, 0.6);
+	background-color:rgba(0, 0, 0, 0.8);
     background-clip: padding-box;
     color: #fff;
 }
@@ -176,14 +217,46 @@ div {margin:0; padding:0; border:0;}
 	position:fixed;
 	text-align: center;
 	vertical-align: middle;
-	left: 290px;
-	top:40px;
-	bottom: 30px;
-	right:40px;
+	left: 330px;
+	top:50px;
+	bottom: 40px;
+	right:80px;
+	border-radius: 10px;
+	box-shadow: 0 4px 14px 0 rgba(0,0,0,.1);
 	/* background-color:antiquewhite; */
 	opacity: 0.95;
 
+	/* background: inherit;    */
+	/* -webkit-filter: blur(3px);   
+	-moz-filter: blur(3px);   
+	-ms-filter: blur(3px);   
+	-o-filter: blur(3px);   
+	filter: blur(3px);   
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false); */
+
   }
+  /* .statistic-echarts::before
+  {
+	content:'';
+	position:absolute;
+	top:0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: inherit;
+	background-attachment: fixed;
+	filter: blur(4px);
+  }
+  .statistic-echarts::after
+  {
+	content: "";
+	position: absolute;
+	top:0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.25);
+  } */
   .el-carousel__container
   {
 	position:relative;
