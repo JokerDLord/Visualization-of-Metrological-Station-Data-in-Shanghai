@@ -40,8 +40,6 @@
 
 <body onLoad="onLoad()">
   <div id="basemap" class="base1">
-  <el-button type="success" icon="el-icon-sunny" @click="showweatherInfo" id="weather-button" circle></el-button>
-  <div class="weather-info"> 你说说为啥 </div>
 
   </div>
 
@@ -55,13 +53,13 @@
     <el-menu default-active="0" class="el-menu-vertical-left" @open="handleOpen" @close="handleClose"
       background-color="#545c64" text-color="#fff" active-text-color="#fff">
       <!--#ffd04b -->
-      <template>
+      <!-- <template> -->
         <div class="usricon">
           <h2>
             <el-avatar icon="el-icon-user-solid" :size="60" id="usricon-avator"></el-avatar>
             <h2>
         </div>
-      </template>
+      <!-- </template> -->
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-menu"></i>
@@ -166,10 +164,16 @@
 
     </div>
   </transition>
-  
 
+  <el-button type="success" icon="el-icon-sunny" @click="showweatherInfo" id="weather-button" circle></el-button>
+  <div class="weather-info" style="display:none">
+    <div id="today-info" style="height:200px;width:100%;">
 
+    </div>
+    <div id="forecast-echart" style="height:200px;width:250px;">
 
+    </div>
+  </div>
 
 
 

@@ -68,6 +68,37 @@ let yanzhongicon = L.icon({
     // popupAnchor:[]
 })
 
+/////////////基于高德api的定位功能
+var map = new AMap.Map('container', {
+    resizeEnable: true
+});
+AMap.plugin('AMap.Geolocation', function () {
+    var geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+        timeout: 10000,          //超过10秒后停止定位，默认：5s
+        buttonPosition: 'RB',    //定位按钮的停靠位置
+        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+    });
+    map.addControl(geolocation);
+    geolocation.getCurrentPosition(function (status, result) {
+        if (status == 'complete') {
+            onComplete(result)
+        } else {
+            onError(result)
+        }
+    });
+});
+//解析定位结果
+function onComplete(data) {
+    console.log(data)
+}
+//解析定位错误信息
+function onError(data) {
+    console.log(data);
+}
+////////////
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -709,21 +740,6 @@ function showStation(stationinfo) {
 
 function onLoad() {
 
-    //加载天气查询插件
-    AMap.plugin('AMap.Weather', function () {
-        //创建天气查询实例
-        var weather = new AMap.Weather();
-
-        // //执行实时天气信息查询
-        // weather.getLive('上海市', function (err, data) {
-        //     console.log(err, data);
-        // });
-        //执行未来天气信息查询
-        weather.getForecast('上海市', function (err, data) {
-            console.log(err, data);
-        });
-    });
-
     // getLocation()// 获取使用者的位置
 
     mymap = L.map("basemap", {
@@ -795,6 +811,7 @@ function onLoad() {
             info: "hondosimida",
             name: "wjk",
             defauName: "用户未登录",
+            isLogin:false,
             show: false
         },
         methods: {
@@ -956,10 +973,135 @@ function onLoad() {
     // 右上角的天气信息按钮
     const weatherButton = new Vue({
         el: "#weather-button",
-        data: {},
+        data: {
+            flg: false,
+            weartherinfo4: "nono",
+            Chartstorage: ""
+        },
         methods: {
             showweatherInfo() {
+                if (!this.flg) {
+                    this.flg = !this.flg;
+                    //加载天气查询插件
+                    AMap.plugin('AMap.Weather', function () {
+                        //创建天气查询实例
+                        let weather = new AMap.Weather();
 
+                        // //执行实时天气信息查询
+                        // weather.getLive('上海市', function (err, data) {
+                        //     console.log(err, data);
+                        // });
+                        //执行未来天气信息查询
+
+                        weather.getForecast('上海市', function (err, data) {
+                            console.log(err, data);
+                            this.weartherinfo4 = data.forecasts
+                            this.datelst = new Array()
+                            this.templst = new Array()
+                            for (let i = 0; i < this.weartherinfo4.length; i++) {
+                                this.datelst.push(this.weartherinfo4[i].date + "日间")
+                                this.datelst.push(this.weartherinfo4[i].date + "夜间")
+                                this.templst.push(this.weartherinfo4[i].dayTemp)
+                                this.templst.push(this.weartherinfo4[i].nightTemp)
+                            }
+
+                            let contents = "<h1 align='center' style='font-size:12px'>上海市今日天气情况</h1>" +
+                                "<p style='font-size:10px;line-height:22px '>日间气温(℃) : " + this.weartherinfo4[0].dayTemp + "<br>日间天气 : " + this.weartherinfo4[0].dayWeather +
+                                "<br>日间风速|风力 : " + this.weartherinfo4[0].dayWindDir + " | " + this.weartherinfo4[0].dayWindPower +
+                                "<br>夜间气温(℃) : " + this.weartherinfo4[0].nightTemp + "<br>夜间天气 : " + this.weartherinfo4[0].nightWeather +
+                                "<br>夜间风速|风力 : " + this.weartherinfo4[0].nightWindDir + " | " + this.weartherinfo4[0].nightWindPower+"</p>"
+                            document.getElementById('today-info').innerHTML = contents
+
+
+                            let chartDom = document.getElementById('forecast-echart');
+                            let myChart = echarts.init(chartDom, null, { renderer: 'svg' });
+                            this.Chartstorage = myChart
+                            let option;
+
+                            option = {
+                                title: {
+                                    // subtext: '三天内日夜气温变化',
+                                    text: '今日-三日后',
+                                    textStyle: {
+                                        "fontSize": 10
+                                    }
+                                },
+                                grid: {
+                                    left: '20%',
+                                    right: '15%',
+                                    bottom: '20%'
+                                },
+                                tooltip: {
+                                    trigger: 'axis'
+                                },
+                                // legend: {
+                                //     data: ['气温变化']
+                                // },
+                                toolbox: {
+                                    show: true,
+                                    feature: {
+                                        dataZoom: {
+                                            yAxisIndex: 'none'
+                                        },
+                                        dataView: { readOnly: false },
+                                        magicType: { type: ['line', 'bar'] },
+                                        restore: {},
+                                        saveAsImage: {}
+                                    }
+                                },
+                                xAxis: {
+                                    // type: 'category',
+                                    boundaryGap: false,
+                                    data: this.datelst,
+                                    axisLabel: {
+                                        show: true,
+                                        textStyle: {
+                                            //    color: '#c3dbff',  //更改坐标轴文字颜色
+                                            fontSize: 9      //更改坐标轴文字大小
+                                        }
+                                    },
+                                },
+                                yAxis: {
+                                    type: 'value',
+                                    axisLabel: {
+                                        formatter: '{value} °C',
+                                        textStyle: {
+                                            //    color: '#c3dbff',  //更改坐标轴文字颜色
+                                            fontSize: 9      //更改坐标轴文字大小
+                                        }
+                                    }
+
+                                },
+                                series: [
+                                    {
+                                        name: '气温变化',
+                                        type: 'line',
+                                        data: this.templst,
+                                        markPoint: {
+                                            data: [
+                                                { type: 'max', name: '气温值' }
+                                            ]
+                                        },
+                                        markLine: {
+                                            data: [
+                                                { type: 'average', name: '平均值' }
+                                            ]
+                                        }
+                                    }
+
+                                ]
+                            };
+
+                            option && myChart.setOption(option);
+
+                        });
+                        $(".weather-info").show(400)
+                    });
+
+                } else {
+                    this.flg = !this.flg;
+                    $(".weather-info").hide(400)
+                }
             }
         }
     })
