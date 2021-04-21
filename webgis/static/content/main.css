@@ -101,6 +101,14 @@ div {margin:0; padding:0; border:0;}
 }
 #usricon-avator
 {
+	z-index:998;
+	display: block ;
+	text-align: center ;
+	margin-left: 90px;
+}
+usricon-avator2
+{
+	z-index:999;
 	display: block ;
 	text-align: center ;
 	margin-left: 90px;
@@ -117,7 +125,7 @@ div {margin:0; padding:0; border:0;}
 
 .aqi-labels
 {
-	z-index:99;
+	z-index:999;
 	position:fixed;
 	/* height:30px; */
 	width:480px;
@@ -265,4 +273,28 @@ div {margin:0; padding:0; border:0;}
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 	opacity: 0;
+  }
+
+
+  #register-form
+  { 
+	z-index: 999;
+	text-align: center;
+	vertical-align: middle;
+	height: 400px;
+	width:400px;	
+	position:fixed;
+	top:300px;
+	left:700px;
+  }
+  #login-form
+  {
+	z-index: 999;
+	text-align: center;
+	vertical-align: middle;
+	height: 400px;
+	width:400px;	
+	position:fixed;
+	top:300px;
+	left:700px;
   }

@@ -4,7 +4,7 @@ import sqlite3 as sql
 def creatdbs1():
     conn = sql.connect("dbs/usrinfo.db")
     conn.execute('''CREATE TABLE usrinfo
-    (usrname   TEXT    NOT NULL,
+    (usrname    TEXT primary key    NOT NULL,
     password text NOT NULL,
     logins text );''')
     conn.commit()
@@ -14,7 +14,7 @@ def creatdbs1():
 def creatdbs2():   
     connn = sql.connect("dbs/usrDetails.db")
     connn.execute('''CREATE TABLE usrdetails
-    (usrname   TEXT    NOT NULL,
+    (usrname   TEXT primary key   NOT NULL,
     eventtime text NOT NULL,
     eventlonlat text NOT NULL,
     eventdetails text NOT NULL,

@@ -18,7 +18,6 @@ var aqiChartstorage2;
 
 
 
-
 let metstationicon = L.icon({
     iconUrl: '../static/Markers/气象站-蓝.png',
     iconSize: [50, 50],
@@ -117,7 +116,18 @@ function clearDom(dom) {
         dom.firstChild.remove();
     }
 }
+// 将背景更改为模糊样式
+function changeClassBackground(px) {
+    $("#basemap").css({
+        filter: "blur(" + px + "px)"
+    })
+}
 
+function returnNormalBackgroud() {
+    $("#basemap").css({
+        filter: ""
+    })
+}
 
 
 function getXdataormore(singlestationData) {
@@ -805,14 +815,32 @@ function onLoad() {
     }
     )
 
+    // const usrname = new Vue({
+    //     el: "#imloser",
+    //     data: {
+    //         usrname: "用户未登录"
+    //     }
+    // })
+    const usricon = new Vue({
+        
+        el: "#usricon-avator-h",
+        data: {
+            isLogin: false,
+            notLogin:!this.isLogin,
+            picpath: "./static/img/smile.jpg"
+        }
+    })
+
+    // 这是页面的主干控件 左边的导航条上的所有元素和属性、方法都由它渲染
     let navMenu = new Vue({
         el: "#navMenu",
         date: {
             info: "hondosimida",
-            name: "wjk",
+            usrname: "用户未登录",
             defauName: "用户未登录",
-            isLogin:false,
-            show: false
+            isLogin: false,
+            show: false,
+            usrpicture:"./static/img/smile.jpg"
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -882,14 +910,32 @@ function onLoad() {
                             }
                         }
                     })
-                    $("#basemap").css({
-                        filter: "blur(5px)"
-                    })
+                    // $("#basemap").css({
+                    //     filter: "blur(5px)"
+                    // })
+                    changeClassBackground(5)
 
                 } else {
-                    $("#basemap").css({
-                        filter: ""
-                    })
+                    // $("#basemap").css({
+                    //     filter: ""
+                    // })
+                    returnNormalBackgroud()
+                }
+            },
+            openLogin() {
+                login1.centerDialogVisible = true
+            },
+            addPoint(){
+                if(this.isLogin)
+                {
+
+                }
+            },
+            showEvent(){
+                if(this.isLogin)
+                {
+                    eventDrawer.drawer = !eventDrawer.drawer
+                    console.log(eventDrawer.drawer)
                 }
             }
         },
@@ -915,6 +961,264 @@ function onLoad() {
 
         }
     })
+
+    let eventDrawer = new Vue({
+        el:"#eventDrawer",
+        data:{
+            drawer:false
+        },
+        methods:{
+
+        }
+    })
+
+
+
+    let registerform = new Vue({
+        el: "#register-form",
+        data() {
+            let checkName = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('昵称不能为空'));
+                }
+                setTimeout(() => {
+                    // if (!Number.isInteger(value)) {
+                    //     callback(new Error('请输入数字值'));
+                    // } else {
+                    //     if (value < 18) {
+                    //         callback(new Error('必须年满18岁'));
+                    //     } else {
+                    //         callback();
+                    //     }
+                    // }
+                    callback();
+                }, 1000);
+            };
+            let validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            let validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                ruleForm: {
+                    pass: '',
+                    checkPass: '',
+                    name: ''
+                },
+                rules: {
+                    pass: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        { validator: validatePass2, trigger: 'blur' }
+                    ],
+                    name: [
+                        { validator: checkName, trigger: 'blur' }
+                    ]
+                }
+            };
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        //如果有效，先建立后端链接，根据是否成功注册账户进行判断
+                        const _this = this //哈哈哈哈想不到吧 在这里用_this方便子作用域使用消息框
+                        $.ajax({
+                            url: "/registerAccount",
+                            methods: "get",
+                            data: this.ruleForm,
+                            success: function (response) {
+                                this.registerResult = JSON.parse(response)
+                                $("#register-form").css("display", 'none');
+                                returnNormalBackgroud()
+                                if (this.registerResult.success) {
+                                    // alert('submit!');
+                                    _this.$message({
+                                        showClose: true,
+                                        message: '注册成功啦！',
+                                        type: "success"
+                                    });
+                                } else {
+                                    _this.$message.error(this.registerResult.contents);
+                                }
+                            }
+                        })
+
+                        // this.$message({
+                        //     showClose: true,
+                        //     message: this.registerResult.contents
+                        // });
+                        // console.log(this.ruleForm.name, this.ruleForm.pass)
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            cancel() {
+                $("#register-form").css("display", 'none');
+                returnNormalBackgroud()
+            }
+
+        }
+    })
+
+    let loginform = new Vue({
+        el: "#login-form",
+        data() {
+            let checkName = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('昵称不能为空'));
+                }
+                setTimeout(() => {
+                    // if (!Number.isInteger(value)) {
+                    //     callback(new Error('请输入数字值'));
+                    // } else {
+                    //     if (value < 18) {
+                    //         callback(new Error('必须年满18岁'));
+                    //     } else {
+                    //         callback();
+                    //     }
+                    // }
+                    callback();
+                }, 1000);
+            };
+            let validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            // let validatePass2 = (rule, value, callback) => {
+            //     if (value === '') {
+            //         callback(new Error('请再次输入密码'));
+            //     } else if (value !== this.ruleForm.pass) {
+            //         callback(new Error('两次输入密码不一致!'));
+            //     } else {
+            //         callback();
+            //     }
+            // };//  
+            return {
+                ruleForm: {
+                    pass: '',
+                    // checkPass: '',
+                    name: ''
+                },
+                rules: {
+                    pass: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    // checkPass: [
+                    //     { validator: validatePass2, trigger: 'blur' }
+                    // ],
+                    name: [
+                        { validator: checkName, trigger: 'blur' }
+                    ]
+                }
+            };
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        //如果有效，先建立后端链接，根据是否成功注册账户进行判断
+                        const _this = this //哈哈哈哈想不到吧 在这里用_this方便子作用域使用消息框
+                        $.ajax({
+                            url: "/loginAccount",
+                            methods: "get",
+                            data: this.ruleForm,
+                            success: function (response) {
+                                this.loginResult = JSON.parse(response)
+                                $("#login-form").css("display", 'none');
+                                returnNormalBackgroud()
+                                if (this.loginResult.success) {
+                                    // alert('submit!');
+                                    //登录成功后 这里处理的事务比较多 例如更改头像 更改登录名字
+                                    _this.$message({
+                                        showClose: true,
+                                        message: '登录成功！',
+                                        type: "success"
+                                    });
+                                    navMenu.isLogin = !navMenu.isLogin
+                                    usricon.isLogin = !usricon.isLogin
+                                    $("#imloser").text(_this.ruleForm.name);                                        
+                                    
+
+
+                                } else {
+                                    _this.$message.error(this.loginResult.contents);
+                                }
+                            }
+                        })
+
+                        // this.$message({
+                        //     showClose: true,
+                        //     message: this.registerResult.contents
+                        // });
+                        // console.log(this.ruleForm.name, this.ruleForm.pass)
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            cancel() {
+                $("#login-form").css("display", 'none');
+                returnNormalBackgroud()
+            }
+
+        }
+    })
+
+    const login1 = new Vue({
+        el: "#login-1",
+        data: {
+            info: "请用户选择登录或是注册",
+            centerDialogVisible: false,
+            registerFormVisible: false // 注意这是控制注册窗口的判定变量
+        },
+        methods: {
+            register() {
+                // this.registerFormVisible = !this.registerFormVisible//???不起作用
+                $("#register-form").css("display", 'inline-block');
+                changeClassBackground(5)
+                this.centerDialogVisible = false
+            },
+            loggin() {
+                $("#login-form").css("display", 'inline-block');
+                changeClassBackground(5)
+                this.centerDialogVisible = false
+                // $("#imloser").text("汉奸王九科必死");
+            }
+        }
+    })
+
+
     let aqilabel = new Vue({
         el: "#class-lable",
         data: {
@@ -1009,7 +1313,7 @@ function onLoad() {
                                 "<p style='font-size:10px;line-height:22px '>日间气温(℃) : " + this.weartherinfo4[0].dayTemp + "<br>日间天气 : " + this.weartherinfo4[0].dayWeather +
                                 "<br>日间风速|风力 : " + this.weartherinfo4[0].dayWindDir + " | " + this.weartherinfo4[0].dayWindPower +
                                 "<br>夜间气温(℃) : " + this.weartherinfo4[0].nightTemp + "<br>夜间天气 : " + this.weartherinfo4[0].nightWeather +
-                                "<br>夜间风速|风力 : " + this.weartherinfo4[0].nightWindDir + " | " + this.weartherinfo4[0].nightWindPower+"</p>"
+                                "<br>夜间风速|风力 : " + this.weartherinfo4[0].nightWindDir + " | " + this.weartherinfo4[0].nightWindPower + "</p>"
                             document.getElementById('today-info').innerHTML = contents
 
 

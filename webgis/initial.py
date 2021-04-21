@@ -105,12 +105,12 @@ def queryallStations():
         with sql.connect(dbpath+stationname+'.db') as conn:
             cur = conn.cursor()
             cur.execute(
-                'select * from {} order by rowid desc limit 0,{}'.format(station[stationname],queryhours))
+                'select * from {} order by rowid desc limit 0,{}'.format(station[stationname], queryhours))
             values = cur.fetchall()
             for i in range(queryhours):
-                singletimedata={}
+                singletimedata = {}
                 singleitem = values[i]
-                time = singleitem[0]#取出每一行的时间
+                time = singleitem[0]  # 取出每一行的时间
 
                 for (index, element) in enumerate(Paras):
                     # if not element:
@@ -118,8 +118,64 @@ def queryallStations():
                     singletimedata[element] = singleitem[index]
                 station_datas[time] = singletimedata
         content_dic[stationname] = station_datas
-    
-    return json.dumps({'success':True,'contents':content_dic})
+
+    return json.dumps({'success': True, 'contents': content_dic})
+
+
+@app.route('/registerAccount', methods=['get', 'post'])
+def retgister():
+    name = request.args.get('name')
+    password = request.args.get('pass')
+    print(name, password)
+    logins = ""  # 暂时无日志处理
+    with sql.connect(dbpath+"usrinfo"+'.db') as conn:
+        cur = conn.cursor()
+        insertResult = "Is that all right？ All right!"
+        success = True
+        try:
+            cur.execute("insert into usrinfo values('{}','{}','{}') ".format(
+                name, password, logins))
+        except Exception as unkownResult:
+            print(unkownResult)
+            success = False
+            insertResult = "注册错误，可能是用户已经存在，请直接登录或者更改账户密码"
+        finally:
+            pass
+
+    return json.dumps({'success': success, 'contents': insertResult})
+
+
+@app.route('/loginAccount', methods=['get', 'post'])
+def loginning():
+    name = request.args.get('name')
+    password = request.args.get('pass')
+    print(name, password)
+    with sql.connect(dbpath+"usrinfo"+'.db') as conn:
+        cur = conn.cursor()
+        insertResult = "Is that all right？ All right!"
+        success = True
+        try:
+            cur.execute("select password from usrinfo where usrname = '{}'".format(name))
+            value = cur.fetchall()
+            print(value[0][0])
+
+            if len(value) == 0:
+                success = False
+                insertResult = "登录错误，用户不存在或者用户密码输入错误"
+            elif (value[0][0] == password):
+                insertResult = "Is that all right？ All right!"
+                success = True
+            else: #这种情况下 密码和实际值不相等
+                success = False
+                insertResult = "登录错误，用户不存在或者用户密码输入错误"
+        except Exception as unkownResult:
+            print(unkownResult)
+            success = False
+            insertResult = "登录错误，用户不存在或者用户密码输入错误"
+        finally:
+            pass
+
+    return json.dumps({'success': success, 'contents': insertResult})
 
 
 @app.route('/try', methods=['POST'])

@@ -29,7 +29,7 @@
   <script type="text/javascript"
     src="https://webapi.amap.com/maps?v=1.4.15&key=06ae639ea3db42b29d6dfbe592ebaa9f"></script>
 
-  <script type="text/javascript" src="../static/scripts/main.js"></script>
+
 
   <style>
     .active {
@@ -40,6 +40,52 @@
 
 <body onLoad="onLoad()">
   <div id="basemap" class="base1">
+    <!-- 定义一个站点label条 -->
+    <div class="aqi-labels" id="class-lable" v-cloak>
+      <table>
+        <tbody>
+          <tr>
+            <td style="background-color:#009966">
+              <el-popover placement="top-start" title="优" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数为0－50，空气质量级别为I级，空气质量状况属于优。此时不存在空气污染问题，对公众的健康没有任何危害。">
+                <el-button style="background-color:#009966;color:white;border:1px solid #009966;padding:0px;"
+                  class="aqi-label-button" slot="reference">优</el-button>
+              </el-popover>
+            </td>
+            <td>
+              <el-popover placement="top-start" title="良" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数为51－100，空气质量级别为Ⅱ级，空气质量状况属于良。此时空气质量被认为是可以接受的，除极少数对某种污染物特别敏感的人以外，对公众健康没有危害。">
+                <el-button style="background-color:#ffde33;color:white;border:1px solid #ffde33;padding:0px;"
+                  class="aqi-label-button" slot="reference">良</el-button>
+            </td>
+            <td>
+              <el-popover placement="top-start" title="轻度污染" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数为101－150，空气质量级别为Ⅲ⑴级，空气质量状况属于轻微污染。此时，对污染物比较敏感的人群，例如儿童和老年人、呼吸道疾病或心脏病患者，以及喜爱户外活动的人，他们的健康状况会受到影响，但对健康人群基本没有影响。">
+                <el-button style="background-color:#ff9933;color:white;border:1px solid #ff9933;padding:0px;"
+                  class="aqi-label-button" slot="reference">轻度污染</el-button>
+            </td>
+            <td>
+              <el-popover placement="top-start" title="中度污染" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数为151－200，空气质量级别为Ⅲ⑵级，空气质量状况属于轻度污染。此时，几乎每个人的健康都会受到影响，对敏感人群的不利影响尤为明显。">
+                <el-button style="background-color:#cc0033;color:white;border:1px solid #cc0033;padding:0px;"
+                  class="aqi-label-button" slot="reference">中度污染</el-button>
+            </td>
+            <td>
+              <el-popover placement="top-start" title="重度污染" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数为201－300，空气质量级别为Ⅳ级，空气质量状况属于中度重污染。此时，每个人的健康都会受到比较严重的影响。">
+                <el-button style="background-color:#660099;color:white;border:1px solid #660099;padding:0px;"
+                  class="aqi-label-button" slot="reference">重度污染</el-button>
+            </td>
+            <td>
+              <el-popover placement="top-start" title="严重污染" width=200 trigger="hover" class="aqi-label"
+                content="空气污染指数大于300，空气质量级别为V级，空气质量状况属于重度污染。此时，所有人的健康都会受到严重影响。">
+                <el-button style="background-color:#7e0023;color:white;border:1px solid #7e0023;padding:0px;"
+                  class="aqi-label-button" slot="reference">严重污染</el-button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 
@@ -54,91 +100,100 @@
       background-color="#545c64" text-color="#fff" active-text-color="#fff">
       <!--#ffd04b -->
       <!-- <template> -->
-        <div class="usricon">
+      <div class="usricon" id="usricon" @click="openLogin">
+        <h2 id="usricon-avator-h">
+          <!-- <el-avatar icon="el-icon-user-solid" :size="60" id="usricon-avator" :key=1 style="display:block"></el-avatar>  -->
+          <!-- <el-avatar src="C:\Users\JokerLord\Desktop\毕业论文\Visualization-of-Metrological-Station-Data-in-Shanghai\webgis\static\img\smile.jpg" :size="60" id="usricon-avator"></el-avatar> -->
+          <el-avatar :size="60" id="usricon-avator2" :src=picpath :key=2></el-avatar>
           <h2>
-            <el-avatar icon="el-icon-user-solid" :size="60" id="usricon-avator"></el-avatar>
-            <h2>
-        </div>
+      </div>
       <!-- </template> -->
       <el-submenu index="1">
-        <template slot="title">
+
+        <template id="usrname" slot="title">
           <i class="el-icon-menu"></i>
-          <span>用户未登录</span>
+          <span id="imloser">你好，用户未登录</span> <!-- 对不起我放弃了 我实在不知道怎么在slot内部的子组件上使用mustache插值语法 /(ㄒoㄒ)/~~  -->
         </template>
+
         <el-menu-item-group>
-          <template slot="title">事件操作</template>
-          <el-menu-item index="1-1">添加事件点</el-menu-item>
+          <template slot="title">分组操作</template>
+          <el-menu-item index="1-1" @click="addPoint">添加事件点</el-menu-item>
           <el-menu-item index="1-2">删除事件点</el-menu-item>
         </el-menu-item-group>
-        <el-menu-item-group title="分组2">
-          <el-menu-item index="1-3">显示事件</el-menu-item>
-        </el-menu-item-group>
-        <el-submenu index="1-4">
+
+        <el-menu-item index="1-3" @click="showEvent">显示事件</el-menu-item>
+        <el-menu-item index="1-4">
           <template slot="title">取消事件显示</template>
-          <el-menu-item index="1-4-1">选项1</el-menu-item>
-        </el-submenu>
+        </el-menu-item>
+
       </el-submenu>
+
       <el-menu-item index="2" v-on:click="showStation">
         <i class="el-icon-location"></i>
         <span slot="title">站点显示</span>
       </el-menu-item>
+
       <el-menu-item index="3" disabled>
         <i class="el-icon-document"></i>
         <span slot="title">TIFF文件读取</span>
       </el-menu-item>
+
       <el-menu-item index="4" @click="showStatis">
         <i class="el-icon-setting"></i>
         <span slot="title">统计数据</span>
       </el-menu-item>
+
     </el-menu>
   </el-col>
   </el-row>
-  <!-- 定义一个站点label条 -->
-  <div class="aqi-labels" id="class-lable">
-    <table>
-      <tbody>
-        <tr>
-          <td style="background-color:#009966">
-            <el-popover placement="top-start" title="优" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数为0－50，空气质量级别为I级，空气质量状况属于优。此时不存在空气污染问题，对公众的健康没有任何危害。">
-              <el-button style="background-color:#009966;color:white;border:1px solid #009966;padding:0px;"
-                class="aqi-label-button" slot="reference">优</el-button>
-            </el-popover>
-          </td>
-          <td>
-            <el-popover placement="top-start" title="良" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数为51－100，空气质量级别为Ⅱ级，空气质量状况属于良。此时空气质量被认为是可以接受的，除极少数对某种污染物特别敏感的人以外，对公众健康没有危害。">
-              <el-button style="background-color:#ffde33;color:white;border:1px solid #ffde33;padding:0px;"
-                class="aqi-label-button" slot="reference">良</el-button>
-          </td>
-          <td>
-            <el-popover placement="top-start" title="轻度污染" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数为101－150，空气质量级别为Ⅲ⑴级，空气质量状况属于轻微污染。此时，对污染物比较敏感的人群，例如儿童和老年人、呼吸道疾病或心脏病患者，以及喜爱户外活动的人，他们的健康状况会受到影响，但对健康人群基本没有影响。">
-              <el-button style="background-color:#ff9933;color:white;border:1px solid #ff9933;padding:0px;"
-                class="aqi-label-button" slot="reference">轻度污染</el-button>
-          </td>
-          <td>
-            <el-popover placement="top-start" title="中度污染" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数为151－200，空气质量级别为Ⅲ⑵级，空气质量状况属于轻度污染。此时，几乎每个人的健康都会受到影响，对敏感人群的不利影响尤为明显。">
-              <el-button style="background-color:#cc0033;color:white;border:1px solid #cc0033;padding:0px;"
-                class="aqi-label-button" slot="reference">中度污染</el-button>
-          </td>
-          <td>
-            <el-popover placement="top-start" title="重度污染" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数为201－300，空气质量级别为Ⅳ级，空气质量状况属于中度重污染。此时，每个人的健康都会受到比较严重的影响。">
-              <el-button style="background-color:#660099;color:white;border:1px solid #660099;padding:0px;"
-                class="aqi-label-button" slot="reference">重度污染</el-button>
-          </td>
-          <td>
-            <el-popover placement="top-start" title="严重污染" width=200 trigger="hover" class="aqi-label"
-              content="空气污染指数大于300，空气质量级别为V级，空气质量状况属于重度污染。此时，所有人的健康都会受到严重影响。">
-              <el-button style="background-color:#7e0023;color:white;border:1px solid #7e0023;padding:0px;"
-                class="aqi-label-button" slot="reference">严重污染</el-button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 定义一个登录界面的对话框 -->
+  <el-dialog title="用户登录" id="login-1" :visible.sync="centerDialogVisible" width="30%" center>
+    <span v-text="info" style="text-align: center; vertical-align: middle;"></span><br>
+    <span slot="footer" class="dialog-footer" style="text-align: center; vertical-align: middle;">
+      <el-button @click="register">注 册</el-button>
+      <el-button type="primary" @click="loggin">登 录</el-button>
+    </span>
+  </el-dialog>
+
+  <!-- 点击注册按钮后会显示出来的 -->
+  <div id="register-form" style="display:none">
+    <!--v-show="registerFormVisible" style="display:inline-block" -->
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="register-ruleForm">
+      <el-form-item label="昵称" prop="name">
+        <el-input v-model.number="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="pass">
+        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+        <el-button @click="cancel">取消</el-button>
+      </el-form-item>
+    </el-form>
   </div>
+  <!-- 点击登录按钮后会显示出来的 -->
+  <div id="login-form" style="display:none">
+    <!--v-show="registerFormVisible" style="display:inline-block" -->
+    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="login-ruleForm">
+      <el-form-item label="昵称" prop="name">
+        <el-input v-model.number="ruleForm.name"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="pass">
+        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')">确认登录</el-button>
+        <el-button @click="cancel">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+
+
+
   <!-- 定义站点弹出卡片 -->
 
   <el-card class="box-card" id="singlestation-box-card" v-show="showcard">
@@ -175,13 +230,13 @@
     </div>
   </div>
 
+  <!-- 登录后显示事件时弹出的抽屉 -->
+  <el-drawer :visible.sync="drawer" :with-header="false" :modal="false" id="eventDrawer" :size=400 style="z-index:9999" >
+    <span>我来啦大抽屉!</span>
+  </el-drawer>
 
 
 </body>
-<script>
-
-
-
-</script>
+<script type="text/javascript" src="../static/scripts/main.js"></script>
 
 </html>
