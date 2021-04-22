@@ -1,2 +1,3 @@
 1mask层实现背景毛玻璃效果
 2 父子组件渲染？懒渲染？着重掌握这个部分
+3 多组件嵌套如何实现？避免instance before referenced报错

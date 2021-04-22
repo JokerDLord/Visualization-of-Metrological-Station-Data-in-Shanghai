@@ -27,7 +27,7 @@ div {margin:0; padding:0; border:0;}
 
 .weather-info
 {
-	z-index:999;;
+	z-index:999;
 	position:fixed;
 	right:10px;
 	top:120px;
@@ -297,4 +297,47 @@ usricon-avator2
 	position:fixed;
 	top:300px;
 	left:700px;
+  }
+
+  /* 这个技巧极其重要 该属性可以使鼠标事件在抽屉的遮罩层上进行穿透 而在drawer上不进行穿透 */
+  .el-drawer__wrapper
+  {
+	pointer-events:none !important;
+  }
+  .el-drawer__open .el-drawer.rtl 
+  {
+	pointer-events: auto !important;
+  }
+.el-drawer.rtl 
+{
+	pointer-events: auto !important;
+}
+
+/* 事件添加项的层叠样式 */
+.event-card 
+{
+	z-index:502;
+    width: 400px;
+	height: 280px;
+	position:fixed;;
+	bottom:5%;
+	left:15%;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 8px;
+	box-shadow: 0 4px 14px 0 rgba(0,0,0,.1);
+	/* overflow: hidden; */
+	text-align: center;
+	vertical-align: middle;
+	/* transform: translate(-50%,-50%); */
+	background-color: white;
+}
+#event-form
+  {
+	text-align: center;
+	vertical-align: middle;
+	width: 90%;
+    /* height: 90%; */
+    position: absolute;
+    margin: 25px 0px 10px -5px;
   }

@@ -67,6 +67,13 @@ let yanzhongicon = L.icon({
     // popupAnchor:[]
 })
 
+let eventicon = L.icon({
+    iconUrl: '../static/Markers/站点.png',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    // popupAnchor:[]
+})
+
 /////////////基于高德api的定位功能
 var map = new AMap.Map('container', {
     resizeEnable: true
@@ -92,6 +99,9 @@ AMap.plugin('AMap.Geolocation', function () {
 //解析定位结果
 function onComplete(data) {
     console.log(data)
+    mylatitude = data.position.lat
+    mylongitude = data.position.lng
+    console.log(mylongitude, mylatitude)
 }
 //解析定位错误信息
 function onError(data) {
@@ -822,11 +832,11 @@ function onLoad() {
     //     }
     // })
     const usricon = new Vue({
-        
+
         el: "#usricon-avator-h",
         data: {
             isLogin: false,
-            notLogin:!this.isLogin,
+            notLogin: !this.isLogin,
             picpath: "./static/img/smile.jpg"
         }
     })
@@ -840,7 +850,8 @@ function onLoad() {
             defauName: "用户未登录",
             isLogin: false,
             show: false,
-            usrpicture:"./static/img/smile.jpg"
+            usrpicture: "./static/img/smile.jpg",
+            addPointWindow:false
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -925,15 +936,29 @@ function onLoad() {
             openLogin() {
                 login1.centerDialogVisible = true
             },
-            addPoint(){
-                if(this.isLogin)
-                {
+            addPoint() {
+                if (this.isLogin) {
+                    if (!this.addPointWindow) {
+                        $("#event-card").css("display", 'inline-block');
+                        this.addPointWindow = !this.addPointWindow
+                        let marker = L.marker([mylatitude, mylongitude], { icon: eventicon, draggable: true })
+                        marker.addTo(mymap)
+                        marker.name = "自定义事件点"//
 
+                        marker.on('drag', function (event) {
+                            let position = marker.getLatLng();
+                            console.log('实时坐标：' + marker.getLatLng(),position.lat,position.lng);
+                        })
+
+
+                    } else if (this.addPointWindow) {
+                        $("#event-card").css("display", 'none');
+                        this.addPointWindow = !this.addPointWindow
+                    }
                 }
             },
-            showEvent(){
-                if(this.isLogin)
-                {
+            showEvent() {
+                if (this.isLogin) {
                     eventDrawer.drawer = !eventDrawer.drawer
                     console.log(eventDrawer.drawer)
                 }
@@ -963,11 +988,11 @@ function onLoad() {
     })
 
     let eventDrawer = new Vue({
-        el:"#eventDrawer",
-        data:{
-            drawer:false
+        el: "#eventDrawer",
+        data: {
+            drawer: false
         },
-        methods:{
+        methods: {
 
         }
     })
@@ -1163,8 +1188,8 @@ function onLoad() {
                                     });
                                     navMenu.isLogin = !navMenu.isLogin
                                     usricon.isLogin = !usricon.isLogin
-                                    $("#imloser").text(_this.ruleForm.name);                                        
-                                    
+                                    $("#imloser").text(_this.ruleForm.name);
+
 
 
                                 } else {
@@ -1261,6 +1286,87 @@ function onLoad() {
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
                 });
+        }
+    })
+
+    // let eventcard = new Vue({
+    //     el: "#event-card",
+    //     data: {
+    //         isShow: true
+    //     },
+    //     methods: {
+
+    //     }
+
+    // })
+
+    let eventform = new Vue({
+        el: "#event-form",
+        data() {
+            let checklon = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('经度不能为空'));
+                }
+                // callback();
+                setTimeout(() => {
+                    // if (!Number.isInteger(value)) {
+                    //     callback(new Error('请输入数字值'));
+                    // } else {
+                    //     if (value < 18) {
+                    //         callback(new Error('必须年满18岁'));
+                    //     } else {
+                    //         callback();
+                    //     }
+                    // }
+                    callback();
+                }, 500);
+            };
+            let checklat = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('纬度不能为空'));
+                }
+            };
+            var checkevent = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入事件详情'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                ruleForm: {
+                    longitude: '',
+                    latitude: '',
+                    eventRecor: ''
+                },
+                rules: {
+                    longitude: [
+                        { validator: checklon, trigger: 'blur' }
+                    ],
+                    latitude: [
+                        { validator: checklat, trigger: 'blur' }
+                    ],
+                    eventRecor: [
+                        { validator: checkevent, trigger: 'blur' }
+                    ]
+                }
+            };
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            Dlocation(ruleForm) {
+
+
+            }
         }
     })
 
