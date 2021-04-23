@@ -5721,3 +5721,414 @@ JavaScript error: http://www.pm25.in/shanghai, line 82: ReferenceError: $ is not
 JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
 JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
 JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
+JavaScript error: , line 0: NS_ERROR_NOT_AVAILABLE
+1:49823
+1619121713928	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileLLeddw"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619121714947	Marionette	INFO	Listening on port 49832
+1619121714967	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619121785248	Marionette	INFO	Stopped listening on port 49832
+1619123783028	geckodriver	INFO	Listening on 127.0.0.1:51902
+1619123786042	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileemUBUZ"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619123787028	Marionette	INFO	Listening on port 51911
+1619123787077	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619123787496	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619123788134	Marionette	INFO	Stopped listening on port 51911
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619125260316	geckodriver	INFO	Listening on 127.0.0.1:52504
+1619125263331	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileW8R6ey"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619125264307	Marionette	INFO	Listening on port 52512
+1619125264354	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619125264769	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619125265387	Marionette	INFO	Stopped listening on port 52512
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619128860963	geckodriver	INFO	Listening on 127.0.0.1:53788
+1619128864012	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileiMo0TJ"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619128865054	Marionette	INFO	Listening on port 53798
+1619128865549	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619128866376	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619128867363	Marionette	INFO	Stopped listening on port 53798
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+[Parent 14220, Gecko_IOThread] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:166
+1619132460318	geckodriver	INFO	Listening on 127.0.0.1:55011
+1619132463337	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileeVPd5Y"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619132464302	Marionette	INFO	Listening on port 55019
+1619132464364	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619132464905	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619132465539	Marionette	INFO	Stopped listening on port 55019
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619136060711	geckodriver	INFO	Listening on 127.0.0.1:56236
+1619136063735	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileG0EuNm"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619136064646	Marionette	INFO	Listening on port 56244
+1619136064776	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619136067021	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619136069180	Marionette	INFO	Stopped listening on port 56244
+1619139660990	geckodriver	INFO	Listening on 127.0.0.1:57541
+1619139664021	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileW9FHHI"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619139664986	Marionette	INFO	Listening on port 57551
+1619139665056	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619139666034	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619139666643	Marionette	INFO	Stopped listening on port 57551
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619143260907	geckodriver	INFO	Listening on 127.0.0.1:58753
+1619143263907	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileBpAHPm"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619143264897	Marionette	INFO	Listening on port 58761
+1619143264940	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619143266622	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619143268187	Marionette	INFO	Stopped listening on port 58761
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+[Parent 3676, Gecko_IOThread] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:166
+1619146860978	geckodriver	INFO	Listening on 127.0.0.1:60113
+1619146863987	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofile3pKzEH"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619146864968	Marionette	INFO	Listening on port 60123
+1619146865021	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619146866576	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619146869808	Marionette	INFO	Stopped listening on port 60123
+1619150460798	geckodriver	INFO	Listening on 127.0.0.1:61331
+1619150463815	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofile58VQyG"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619150464702	Marionette	INFO	Listening on port 61339
+1619150464842	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619150465610	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619150466257	Marionette	INFO	Stopped listening on port 61339
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+[Parent 17484, Gecko_IOThread] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:166
+1619154060834	geckodriver	INFO	Listening on 127.0.0.1:63589
+1619154063844	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofilevF6wKr"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619154064835	Marionette	INFO	Listening on port 63604
+1619154064871	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619154065560	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619154066191	Marionette	INFO	Stopped listening on port 63604
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619157660230	geckodriver	INFO	Listening on 127.0.0.1:65057
+1619157663253	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileOAeUtO"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619157664470	Marionette	INFO	Listening on port 65067
+1619157664784	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619157665461	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619157665735	Marionette	INFO	Stopped listening on port 65067
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: Region.jsm: "Error fetching region" (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 376))
+1619161260937	geckodriver	INFO	Listening on 127.0.0.1:54168
+1619161263941	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileaUDbMC"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619161265134	Marionette	INFO	Listening on port 54181
+1619161265498	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619161266378	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619161267041	Marionette	INFO	Stopped listening on port 54181
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/fxmonitor-breaches Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619164860963	geckodriver	INFO	Listening on 127.0.0.1:60231
+1619164863969	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofile78l1g9"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619164865144	Marionette	INFO	Listening on port 60242
+1619164865525	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619164866236	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619164866920	Marionette	INFO	Stopped listening on port 60242
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619168460942	geckodriver	INFO	Listening on 127.0.0.1:64989
+1619168463951	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileMfOZT8"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619168464977	Marionette	INFO	Listening on port 64998
+1619168465495	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619168466083	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619168466734	Marionette	INFO	Stopped listening on port 64998
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/fxmonitor-breaches Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619172060111	geckodriver	INFO	Listening on 127.0.0.1:51450
+1619172063115	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofilenVNJtE"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619172064089	Marionette	INFO	Listening on port 51459
+1619172064145	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619172064862	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619172065477	Marionette	INFO	Stopped listening on port 51459
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: Region.jsm: "Error fetching region" (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 376))
+1619175660728	geckodriver	INFO	Listening on 127.0.0.1:53742
+1619175663736	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofiletdgnnz"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619175664696	Marionette	INFO	Listening on port 53752
+1619175664773	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619175665383	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619175665967	Marionette	INFO	Stopped listening on port 53752
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: Region.jsm: "Error fetching region" (new TypeError("NetworkError when attempting to fetch resource.", ""))
+console.error: Region.jsm: "Failed to fetch region" (new Error("NO_RESULT", "resource://gre/modules/Region.jsm", 376))
+1619179260071	geckodriver	INFO	Listening on 127.0.0.1:57991
+1619179263082	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileTa00aR"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619179264139	Marionette	INFO	Listening on port 58003
+1619179264629	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619179271576	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619179274705	Marionette	INFO	Stopped listening on port 58003
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/fxmonitor-breaches Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619182860628	geckodriver	INFO	Listening on 127.0.0.1:60739
+1619182863628	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileb36fgP"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619182864650	Marionette	INFO	Listening on port 60749
+1619182865162	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619182867333	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+console.error: Region.jsm: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 726))
+console.error: Region.jsm: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 376))
+1619182872901	Marionette	INFO	Stopped listening on port 60749
+1619186461026	geckodriver	INFO	Listening on 127.0.0.1:63678
+1619186464048	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofilevA6yug"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619186465048	Marionette	INFO	Listening on port 63691
+1619186465087	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619186468671	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619186471535	Marionette	INFO	Stopped listening on port 63691
+1619190060354	geckodriver	INFO	Listening on 127.0.0.1:51076
+1619190063390	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileNYmqju"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619190064423	Marionette	INFO	Listening on port 51086
+1619190064933	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619190070865	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619190076882	Marionette	INFO	Stopped listening on port 51086
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619190375706	geckodriver	INFO	Listening on 127.0.0.1:51522
+1619190378721	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileaX7SCJ"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619190379720	Marionette	INFO	Listening on port 51533
+1619190379756	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 726))
+console.error: Region.jsm: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 376))
+1619190387977	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619190393117	Marionette	INFO	Stopped listening on port 51533
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619193660428	geckodriver	INFO	Listening on 127.0.0.1:53720
+1619193663447	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileVynbjh"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619193664487	Marionette	INFO	Listening on port 53730
+1619193664989	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619193670732	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619193675135	Marionette	INFO	Stopped listening on port 53730
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619197260753	geckodriver	INFO	Listening on 127.0.0.1:56924
+1619197263755	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileEgYjg8"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619197264704	Marionette	INFO	Listening on port 56935
+1619197264799	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619197266090	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619197267534	Marionette	INFO	Stopped listening on port 56935
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+1619200860241	geckodriver	INFO	Listening on 127.0.0.1:60815
+1619200863256	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofiley3LsVj"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619200864229	Marionette	INFO	Listening on port 60825
+1619200864279	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619200864931	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619200865546	Marionette	INFO	Stopped listening on port 60825
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.warn: services.settings: main/message-groups sync interrupted by shutdown
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619204460081	geckodriver	INFO	Listening on 127.0.0.1:49462
+1619204463092	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofilelLAjMw"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619204464026	Marionette	INFO	Listening on port 49472
+1619204464132	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619204464589	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619204465234	Marionette	INFO	Stopped listening on port 49472
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+1619208060645	geckodriver	INFO	Listening on 127.0.0.1:53305
+1619208063672	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileY4KPv6"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619208064685	Marionette	INFO	Listening on port 53313
+1619208064707	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619208135100	Marionette	INFO	Stopped listening on port 53313
+1619211660476	geckodriver	INFO	Listening on 127.0.0.1:56390
+1619211663489	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileQ6Fqem"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619211664486	Marionette	INFO	Listening on port 56403
+1619211664525	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619211664968	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619211665544	Marionette	INFO	Stopped listening on port 56403
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.
+[Parent 7024, Gecko_IOThread] WARNING: file /builds/worker/checkouts/gecko/ipc/chromium/src/base/process_util_win.cc:166
+1619215260293	geckodriver	INFO	Listening on 127.0.0.1:61501
+1619215263305	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofilerZpBKe"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619215264376	Marionette	INFO	Listening on port 61516
+1619215264838	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619215265307	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619215265974	Marionette	INFO	Stopped listening on port 61516
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+JavaScript error: resource:///actors/ContentMetaChild.jsm, line 179: InvalidStateError: JSWindowActorChild.sendAsyncMessage: JSWindowActorChild cannot send at the moment
+1619218860669	geckodriver	INFO	Listening on 127.0.0.1:49199
+1619218863672	mozrunner::runner	INFO	Running command: "C:\\Users\\JokerLord\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\JOKERL~1\\AppData\\Local\\Temp\\rust_mozprofileR2YxsD"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1619218864704	Marionette	INFO	Listening on port 49208
+1619218865226	Marionette	WARN	TLS certificate errors will be ignored for this session
+1619218865839	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+JavaScript warning: http://js.t.sinajs.cn/open/api/js/widget/iframeWidget/iframeWidget.js?version=20140327, line 1: unreachable code after return statement
+1619218866661	Marionette	INFO	Stopped listening on port 49208
+JavaScript error: resource://activity-stream/lib/ASRouter.jsm, line 987: NS_ERROR_ILLEGAL_VALUE: Component returned failure code: 0x80070057 (NS_ERROR_ILLEGAL_VALUE) [nsIObserverService.removeObserver]
+console.error: services.settings: 
+  main/fxmonitor-breaches Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/partitioning-exempt-urls Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  main/message-groups Signature failed  TypeError: NetworkError when attempting to fetch resource.

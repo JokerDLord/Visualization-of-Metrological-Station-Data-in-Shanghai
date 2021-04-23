@@ -14,7 +14,7 @@ def creatdbs1():
 def creatdbs2():   
     connn = sql.connect("dbs/usrDetails.db")
     connn.execute('''CREATE TABLE usrdetails
-    (usrname   TEXT primary key   NOT NULL,
+    (usrname   TEXT   NOT NULL,
     eventtime text NOT NULL,
     eventlonlat text NOT NULL,
     eventdetails text NOT NULL,
@@ -27,5 +27,5 @@ def creatdbs2():
 
 
 if __name__ == "__main__":
-    creatdbs1()
+    # creatdbs1()
     creatdbs2()

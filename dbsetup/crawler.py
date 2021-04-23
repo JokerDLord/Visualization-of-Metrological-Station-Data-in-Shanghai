@@ -97,7 +97,6 @@ def StoreDB(insertlst):
     # tstime = time.strftime("%Y-%m-%d %H", time.localtime())
     tstime = (datetime.datetime.now()-datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")
     insertlst = [tstime] + insertlst
-    # insertlst 可能出现_ [] 等特殊内容及与数据库格式不匹配的问题
     for i,con in enumerate(insertlst):
         if (i not in (0,1,3)) and (con != "_") and con:
             insertlst[i] = float(con)

@@ -155,27 +155,93 @@ def loginning():
         insertResult = "Is that all right？ All right!"
         success = True
         try:
-            cur.execute("select password from usrinfo where usrname = '{}'".format(name))
+            cur.execute(
+                "select password from usrinfo where usrname = '{}'".format(name))
             value = cur.fetchall()
             print(value[0][0])
 
             if len(value) == 0:
                 success = False
-                insertResult = "登录错误，用户不存在或者用户密码输入错误"
+                insertResult = "登录错误，用户不存在或者用户密码输入错误1"
             elif (value[0][0] == password):
                 insertResult = "Is that all right？ All right!"
                 success = True
-            else: #这种情况下 密码和实际值不相等
+            else:  # 这种情况下 密码和实际值不相等
                 success = False
-                insertResult = "登录错误，用户不存在或者用户密码输入错误"
+                insertResult = "登录错误，用户不存在或者用户密码输入错误2"
         except Exception as unkownResult:
             print(unkownResult)
             success = False
-            insertResult = "登录错误，用户不存在或者用户密码输入错误"
+            insertResult = "登录错误，用户不存在或者用户密码输入错误3"
         finally:
             pass
 
     return json.dumps({'success': success, 'contents': insertResult})
+
+
+@app.route('/submitEvent', methods=['get', 'post'])
+def submitevent():
+    elongitude = request.args.get('longitude')
+    elatitude = request.args.get('latitude')
+    erecord = request.args.get('eventRecor')
+    addtime = request.args.get('addtime')
+    usrname = request.args.get('usrname')
+    others = ""  # 暂时无其他信息
+    # 注意数据库中的时间为添加时间
+    print(elongitude, elatitude, erecord, addtime, usrname)
+    with sql.connect(dbpath+"usrdetails.db") as conn:
+        cur = conn.cursor()
+        success = True
+        try:
+            cur.execute("insert into usrdetails values('{}','{}','{}','{}','{}')".format(
+                usrname, addtime, (elongitude+","+elatitude), erecord, others))
+            success = True
+            eventResult = "上传个人时间记录成功"
+        except Exception as unkownResult:
+            print(unkownResult)
+            success = False
+            eventResult = "个人事件上传失败"
+        finally:
+            pass
+
+    return json.dumps({'success': success, 'contents': eventResult})
+
+
+@app.route('/getEvents', methods=['get'])
+def getEvents():
+    usrname = request.args.get("usrname")
+    print(usrname)
+    # contents采用{1：{各项指标}}这种形式记录
+    eventsdic = {}
+    with sql.connect(dbpath+"usrdetails.db") as conn:
+        cur = conn.cursor()
+        success = True
+        counts = 0
+        try:
+            cur.execute(
+                "select * from usrdetails where usrname = '{}'".format(usrname))
+            events = cur.fetchall()
+            print(events)
+            success = True
+            counts = len(events)
+            for i in range(counts):
+                dici = {}
+                dici['eventtime'] = events[i][1]
+                dici['eventlonlat'] = events[i][2]
+                dici['eventdetails'] = events[i][3]
+
+                eventsdic[str(i+1)] = dici
+
+        except Exception as unkownResult:
+            print(unkownResult)
+            success = False
+            events = "获取个人事件记录失败"
+        finally:
+            pass
+    
+    print(eventsdic)
+
+    return json.dumps({'success': success, 'counts': counts, 'contents': eventsdic})
 
 
 @app.route('/try', methods=['POST'])

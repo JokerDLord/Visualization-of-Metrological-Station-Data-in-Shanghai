@@ -13,6 +13,9 @@ let statisticCarousel;//统计图表走马灯
 
 var markers = new Array();
 var divmarkers = new Array();
+var eventsmarkers = new Array()
+eventsmarkers[0] = "我是个什么东西？"
+
 var aqiChartstorage;
 var aqiChartstorage2;
 
@@ -67,12 +70,21 @@ let yanzhongicon = L.icon({
     // popupAnchor:[]
 })
 
-let eventicon = L.icon({
+let locatingicon = L.icon({
     iconUrl: '../static/Markers/站点.png',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
     // popupAnchor:[]
 })
+
+let eventsicon = L.icon({
+    iconUrl: '../static/Markers/事件站点.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    // popupAnchor:[]
+})
+
+
 
 /////////////基于高德api的定位功能
 var map = new AMap.Map('container', {
@@ -138,6 +150,86 @@ function returnNormalBackgroud() {
         filter: ""
     })
 }
+///////
+
+function getCurrentDTime() {
+    let myDate = new Date();
+    let myYear = myDate.getFullYear(); //获取完整的年份(4位,1970-????)
+    let myMonth = myDate.getMonth() + 1; //获取当前月份(0-11,0代表1月)
+    let myToday = myDate.getDate(); //获取当前日(1-31)
+    let myDay = myDate.getDay(); //获取当前星期X(0-6,0代表星期天)
+    let myHour = myDate.getHours(); //获取当前小时数(0-23)
+    let myMinute = myDate.getMinutes(); //获取当前分钟数(0-59)
+    let mySecond = myDate.getSeconds(); //获取当前秒数(0-59)
+
+    let nowTime = myYear + '-' + fillZero(myMonth) + '-' + fillZero(myToday) + ' ' + fillZero(myHour) + ':' + fillZero(myMinute);
+    //  + ':' + fillZero(mySecond) + '  ' + week[myDay] + '  ';
+    return nowTime
+}
+function fillZero(str) {
+    var realNum;
+    if (str < 10) {
+        realNum = '0' + str;
+    } else {
+        realNum = str;
+    }
+    return realNum;
+}
+
+//将marker获取的经纬度放入elinput中
+function insertLocation(eventform, position) {
+    eventform.ruleForm.longitude = position.lng;
+    eventform.ruleForm.latitude = position.lat;
+    $("#ruleFormLon").val(position.lng);
+    $("#ruleFormLat").val(position.lat);
+
+}
+
+//逆地理编码 根据经纬度获取地名
+function getPositionByLonLats(lng, lat) {
+    // console.log("经度："+lng+"纬度"+lat);
+    let lnglatXY = [lng, lat];// 地图上所标点的坐标
+    AMap.service('AMap.Geocoder', function () {// 回调函数
+        geocoder = new AMap.Geocoder({});
+        geocoder.getAddress(lnglatXY, function (status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                // console.log(result.regeocode.formattedAddress);
+                let address = result.regeocode.formattedAddress;
+                console.log(result)
+                console.log(address);
+                return address
+            } else {
+                console.log(status, result)
+                return ""
+            }
+        });
+    });
+}
+getPositionByLonLats(31.03195, 121.15318)
+
+// // 图标icon切换函数
+// function changeicon(marker, flg) {
+//     if (flg) {
+//         marker.setIcon(locatingicon)
+//     } else if (!flg) {
+//         marker.setIcon(eventsicon)
+//     }
+// }
+
+// 高亮函数
+function syncHighlight(di, flg) {
+    if (flg) {
+        $(di.innerName).css('background', 'burlywood')
+        eventsmarkers[di.innerID].setIcon(locatingicon)
+
+    }
+    else {
+        $(di.innerName).css('background', 'white')
+        eventsmarkers[di.innerID].setIcon(eventsicon)
+
+    }
+}
+
 
 
 function getXdataormore(singlestationData) {
@@ -762,6 +854,7 @@ function onLoad() {
 
     // getLocation()// 获取使用者的位置
 
+
     mymap = L.map("basemap", {
         crs: L.CRS.EPSG3857,//这里坐标系一定要改成3857的！！！
         minZoom: 5,
@@ -851,7 +944,7 @@ function onLoad() {
             isLogin: false,
             show: false,
             usrpicture: "./static/img/smile.jpg",
-            addPointWindow:false
+            addPointWindow: false
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -941,26 +1034,119 @@ function onLoad() {
                     if (!this.addPointWindow) {
                         $("#event-card").css("display", 'inline-block');
                         this.addPointWindow = !this.addPointWindow
-                        let marker = L.marker([mylatitude, mylongitude], { icon: eventicon, draggable: true })
+                        let marker = L.marker([mylatitude, mylongitude], { icon: locatingicon, draggable: true })
                         marker.addTo(mymap)
                         marker.name = "自定义事件点"//
 
+                        let position = marker.getLatLng();
+                        insertLocation(eventform, position)
+
                         marker.on('drag', function (event) {
                             let position = marker.getLatLng();
-                            console.log('实时坐标：' + marker.getLatLng(),position.lat,position.lng);
-                        })
+                            // console.log('实时坐标：' + marker.getLatLng(), position.lat, position.lng);
+                            // eventform.ruleForm.longitude = position.lng;
+                            // eventform.ruleForm.latitude = position.lat;
+                            // $("#ruleFormLon").val(position.lng);
+                            // $("#ruleFormLat").val(position.lat);
+                            insertLocation(eventform, position)
 
+                        })
+                        this.positionmarker = marker
 
                     } else if (this.addPointWindow) {
                         $("#event-card").css("display", 'none');
                         this.addPointWindow = !this.addPointWindow
+                        this.positionmarker.remove();
                     }
                 }
             },
             showEvent() {
                 if (this.isLogin) {
-                    eventDrawer.drawer = !eventDrawer.drawer
-                    console.log(eventDrawer.drawer)
+                    //打开drawer前请先获取
+                    if (eventDrawer.drawer) {
+                        for (let i = 0; i < eventsmarkers.length; i++) {
+                            eventsmarkers[i].remove()
+                        }
+                        eventDrawer.drawer = !eventDrawer.drawer //这里我们直接将drawer打开 以免dom未来得及渲染
+                    }
+                    else {
+                        eventDrawer.drawer = !eventDrawer.drawer
+                        $.ajax({
+                            url: "/getEvents",
+                            methods: "get",
+                            data: { usrname: this.usrname },
+                            // contentType: 'application/json',
+                            success: function (response) {
+                                let resdata = JSON.parse(response)
+                                if (resdata.success) {
+                                    this.eventsdata = resdata.contents
+                                    this.eventCounts = resdata.counts
+                                    console.log(this.eventsdata)
+
+
+                                    for (let i = 0; i < this.eventCounts; i++) {
+                                        let index = i + 1
+                                        let headerid = "#drawerc-headerspan" + (index)
+                                        let pcontentid = "#drawerc-p" + (index)
+
+                                        let eventtime = this.eventsdata[index].eventtime
+                                        let [eventlon, eventlat] = this.eventsdata[index].eventlonlat.split(",")
+                                        let eventdetails = this.eventsdata[index].eventdetails
+                                        let eventSite = getPositionByLonLats(eventlat, eventlon)
+                                        // console.log(eventtime)
+                                        $(headerid).text("事件添加时间" + eventtime)
+                                        $(pcontentid).html("事件发生地址： " + eventSite + "<br>事件点经度: " + eventlon + "  事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
+
+                                        let speDomDiv = $("#drawer-card" + index)
+                                        speDomDiv.innerID = index
+                                        speDomDiv.innerName = "#drawer-card" + index
+                                        speDomDiv.mouseover(function () {
+                                            syncHighlight(this, true);
+                                        });
+                                        speDomDiv.mouseout(function () {
+                                            syncHighlight(this, false);
+                                        });
+                                        speDomDiv.click(function () {
+                                            mymap.flyTo(eventsmarkers[this.innerID].getLatLng(), zoom = 12, options = { duration: 0.8 });
+                                        });
+
+                                        let emarker = L.marker([eventlat, eventlon], { icon: eventsicon, draggable: false })
+                                        emarker.innerID = index
+                                        emarker.addTo(mymap)
+
+                                        emarker.on({
+                                            'mouseover': function (e) {
+                                                // changeicon(this, true)
+                                                syncHighlight(speDomDiv, true)
+                                            },
+                                            'mouseout': function (e) {
+                                                // changeicon(this, false)
+                                                syncHighlight(speDomDiv, false)
+                                            },
+                                            'click': function (e) {
+                                                mymap.flyTo(this.getLatLng(), zoom = 12, options = { duration: 0.8 })
+                                            }
+                                        })
+
+
+                                        eventsmarkers[index] = emarker
+                                        // emarker.name = "自定义事件点"//
+                                    }
+
+
+                                }
+                                else {
+                                    console.log(resdata.contents);
+                                    return;
+                                }
+
+                            }
+                        })
+                        // eventDrawer.drawer = !eventDrawer.drawer
+                        // console.log(eventDrawer.drawer)
+                    }
+
+
                 }
             }
         },
@@ -970,7 +1156,7 @@ function onLoad() {
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
                 });
-            console.log(stationinfo)
+            // console.log(stationinfo)
 
             axios.post("/try", {
                 ID: '狗汉奸',
@@ -990,10 +1176,18 @@ function onLoad() {
     let eventDrawer = new Vue({
         el: "#eventDrawer",
         data: {
-            drawer: false
+            drawer: false,
+            eventCounts: 18,
+            title: "事件添加时间",
+            lon: "114",
+            lat: "514",
+            details: "like the ceiling cant hold us"
+
         },
         methods: {
-
+            a: function () {
+                return lon + lat
+            }
         }
     })
 
@@ -1189,9 +1383,7 @@ function onLoad() {
                                     navMenu.isLogin = !navMenu.isLogin
                                     usricon.isLogin = !usricon.isLogin
                                     $("#imloser").text(_this.ruleForm.name);
-
-
-
+                                    navMenu.usrname = _this.ruleForm.name;
                                 } else {
                                     _this.$message.error(this.loginResult.contents);
                                 }
@@ -1324,6 +1516,8 @@ function onLoad() {
             let checklat = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('纬度不能为空'));
+                } else {
+                    callback();
                 }
             };
             var checkevent = (rule, value, callback) => {
@@ -1337,7 +1531,9 @@ function onLoad() {
                 ruleForm: {
                     longitude: '',
                     latitude: '',
-                    eventRecor: ''
+                    eventRecor: '',
+                    addtime: '',
+                    usrname: ''
                 },
                 rules: {
                     longitude: [
@@ -1356,7 +1552,28 @@ function onLoad() {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        // alert('submit!');
+                        this.ruleForm.addtime = getCurrentDTime()
+                        this.ruleForm.usrname = loginform.ruleForm.name //登陆的用户名是啥？ 访问loginform登录框元素中的name找到答案
+                        const _this = this
+                        $.ajax({
+                            url: "/submitEvent",
+                            methods: "get",
+                            data: this.ruleForm,
+                            success: function (response) {
+                                this.eventResult = JSON.parse(response)
+                                if (this.eventResult.success) {
+                                    // alert('submit!');
+                                    _this.$message({
+                                        showClose: true,
+                                        message: '上传成功！',
+                                        type: "success"
+                                    });
+                                } else {
+                                    _this.$message.error(this.eventResult.contents);
+                                }
+                            }
+                        })
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -1364,8 +1581,8 @@ function onLoad() {
                 });
             },
             Dlocation(ruleForm) {
-
-
+                navMenu.positionmarker.setLatLng([mylatitude, mylongitude]);
+                insertLocation(this, navMenu.positionmarker.getLatLng())
             }
         }
     })

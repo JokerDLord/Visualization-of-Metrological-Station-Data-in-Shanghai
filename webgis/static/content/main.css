@@ -307,10 +307,12 @@ usricon-avator2
   .el-drawer__open .el-drawer.rtl 
   {
 	pointer-events: auto !important;
+	overflow-y: scroll;
   }
 .el-drawer.rtl 
 {
 	pointer-events: auto !important;
+	overflow-y: scroll;
 }
 
 /* 事件添加项的层叠样式 */
@@ -341,3 +343,12 @@ usricon-avator2
     position: absolute;
     margin: 25px 0px 10px -5px;
   }
+  #eventDrawer .el-card__body {
+    padding: 0px !important;
+}
+#eventDrawer .el-card__header {
+    padding: 0px 0px;
+    border-bottom: 1px solid #EBEEF5;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
