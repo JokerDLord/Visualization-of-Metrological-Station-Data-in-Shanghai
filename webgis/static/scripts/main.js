@@ -14,7 +14,7 @@ let statisticCarousel;//统计图表走马灯
 var markers = new Array();
 var divmarkers = new Array();
 var eventsmarkers = new Array()
-eventsmarkers[0] = "我是个什么东西？"
+// eventsmarkers[0] = "我是个什么东西？"
 
 var aqiChartstorage;
 var aqiChartstorage2;
@@ -72,15 +72,15 @@ let yanzhongicon = L.icon({
 
 let locatingicon = L.icon({
     iconUrl: '../static/Markers/站点.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     // popupAnchor:[]
 })
 
 let eventsicon = L.icon({
     iconUrl: '../static/Markers/事件站点.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
     // popupAnchor:[]
 })
 
@@ -205,6 +205,7 @@ function getPositionByLonLats(lng, lat) {
         });
     });
 }
+
 getPositionByLonLats(31.03195, 121.15318)
 
 // // 图标icon切换函数
@@ -220,12 +221,14 @@ getPositionByLonLats(31.03195, 121.15318)
 function syncHighlight(di, flg) {
     if (flg) {
         $(di.innerName).css('background', 'burlywood')
-        eventsmarkers[di.innerID].setIcon(locatingicon)
+        var themarker = eventsmarkers[di.innerID - 1]
+        themarker.setIcon(locatingicon)
 
     }
     else {
         $(di.innerName).css('background', 'white')
-        eventsmarkers[di.innerID].setIcon(eventsicon)
+        var themarker = eventsmarkers[di.innerID - 1]
+        themarker.setIcon(eventsicon)
 
     }
 }
@@ -944,7 +947,8 @@ function onLoad() {
             isLogin: false,
             show: false,
             usrpicture: "./static/img/smile.jpg",
-            addPointWindow: false
+            addPointWindow: false,
+            eventCounts : 0
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -1070,7 +1074,9 @@ function onLoad() {
                         eventDrawer.drawer = !eventDrawer.drawer //这里我们直接将drawer打开 以免dom未来得及渲染
                     }
                     else {
+                        const _this = this
                         eventDrawer.drawer = !eventDrawer.drawer
+                        // eventDrawer.drawer = !eventDrawer.drawer
                         $.ajax({
                             url: "/getEvents",
                             methods: "get",
@@ -1079,40 +1085,35 @@ function onLoad() {
                             success: function (response) {
                                 let resdata = JSON.parse(response)
                                 if (resdata.success) {
-                                    this.eventsdata = resdata.contents
-                                    this.eventCounts = resdata.counts
-                                    console.log(this.eventsdata)
+                                    console.log(resdata)
+                                    navMenu.eventsdata = resdata.contents
+                                    navMenu.eventCounts = resdata.counts
+                                    eventDrawer.eventCounts = resdata.counts
+                                    console.log(navMenu.eventsdata)
+                                    console.log(navMenu.eventCounts)
+                                    console.log(eventDrawer.eventCounts)
 
+                                    eventDrawer.$forceUpdate()
 
-                                    for (let i = 0; i < this.eventCounts; i++) {
+                                    for (let i = 0; i < navMenu.eventCounts; i++) {
                                         let index = i + 1
                                         let headerid = "#drawerc-headerspan" + (index)
                                         let pcontentid = "#drawerc-p" + (index)
 
-                                        let eventtime = this.eventsdata[index].eventtime
-                                        let [eventlon, eventlat] = this.eventsdata[index].eventlonlat.split(",")
-                                        let eventdetails = this.eventsdata[index].eventdetails
+                                        let eventtime = navMenu.eventsdata[index].eventtime
+                                        let [eventlon, eventlat] = navMenu.eventsdata[index].eventlonlat.split(",")
+                                        let eventdetails = navMenu.eventsdata[index].eventdetails
                                         let eventSite = getPositionByLonLats(eventlat, eventlon)
                                         // console.log(eventtime)
-                                        $(headerid).text("事件添加时间" + eventtime)
-                                        $(pcontentid).html("事件发生地址： " + eventSite + "<br>事件点经度: " + eventlon + "  事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
+                                        $(headerid).text("事件添加时间: " + eventtime)
+                                        $(pcontentid).html("事件发生地址： " + eventSite + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
 
-                                        let speDomDiv = $("#drawer-card" + index)
-                                        speDomDiv.innerID = index
-                                        speDomDiv.innerName = "#drawer-card" + index
-                                        speDomDiv.mouseover(function () {
-                                            syncHighlight(this, true);
-                                        });
-                                        speDomDiv.mouseout(function () {
-                                            syncHighlight(this, false);
-                                        });
-                                        speDomDiv.click(function () {
-                                            mymap.flyTo(eventsmarkers[this.innerID].getLatLng(), zoom = 12, options = { duration: 0.8 });
-                                        });
+                                        let theeventicon = eventsicon
 
-                                        let emarker = L.marker([eventlat, eventlon], { icon: eventsicon, draggable: false })
+
+                                        var emarker = L.marker([eventlat, eventlon], { icon: theeventicon, draggable: false })
                                         emarker.innerID = index
-                                        emarker.addTo(mymap)
+
 
                                         emarker.on({
                                             'mouseover': function (e) {
@@ -1128,12 +1129,26 @@ function onLoad() {
                                             }
                                         })
 
+                                        emarker.addTo(mymap)
 
-                                        eventsmarkers[index] = emarker
+
+                                        eventsmarkers.push(emarker)//[index-1] = emarker
                                         // emarker.name = "自定义事件点"//
+
+                                        let speDomDiv = $("#drawer-card" + index)
+                                        speDomDiv.innerID = index
+                                        speDomDiv.innerName = "#drawer-card" + index
+                                        speDomDiv.mouseover(function () {
+                                            syncHighlight(speDomDiv, true);
+                                        });
+                                        speDomDiv.mouseout(function () {
+                                            syncHighlight(speDomDiv, false);
+                                        });
+                                        speDomDiv.click(function () {
+                                            mymap.flyTo(eventsmarkers[speDomDiv.innerID - 1].getLatLng(), zoom = 12, options = { duration: 0.8 });
+                                        });
+                                        eventDrawer.$forceUpdate()
                                     }
-
-
                                 }
                                 else {
                                     console.log(resdata.contents);
@@ -1177,16 +1192,62 @@ function onLoad() {
         el: "#eventDrawer",
         data: {
             drawer: false,
-            eventCounts: 18,
+            eventCounts: 0, //可在首次用户登录时就更新
             title: "事件添加时间",
             lon: "114",
             lat: "514",
             details: "like the ceiling cant hold us"
-
         },
         methods: {
             a: function () {
                 return lon + lat
+            },
+            delcard: function (num) {
+                // console.log(navMenu.usrname)
+                // console.log(navMenu.eventsdata[num].eventlonlat)
+                // console.log(navMenu.eventsdata[num].eventtime)
+                // console.log(navMenu.eventsdata[num].eventdetails)
+                this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+
+                    const _this = this;
+                    $.ajax({
+                        url: "/deleEvent",
+                        methods: "get",
+                        data: {
+                            usrname: navMenu.usrname,
+                            eventlonlat: navMenu.eventsdata[num].eventlonlat,
+                            eventtime: navMenu.eventsdata[num].eventtime,
+                            eventdetails: navMenu.eventsdata[num].eventdetails
+                        },
+                        success: function (response) {
+                            _this.deleteResult = JSON.parse(response)
+                            console.log(_this.deleteResult)
+                            if (_this.deleteResult.success) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                // $('#drawer-card' + num).hide(500)
+                                $('#drawer-card' + num).remove()
+                                eventsmarkers[num - 1].remove()
+                            } else {
+                                _this.$message.error("删除失败");
+                            }
+                        }
+                    })
+                    console.log("??")
+
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
         }
     })
@@ -1384,6 +1445,7 @@ function onLoad() {
                                     usricon.isLogin = !usricon.isLogin
                                     $("#imloser").text(_this.ruleForm.name);
                                     navMenu.usrname = _this.ruleForm.name;
+                                    eventDrawer.eventCounts = this.loginResult.counts
                                 } else {
                                     _this.$message.error(this.loginResult.contents);
                                 }
@@ -1423,12 +1485,12 @@ function onLoad() {
             register() {
                 // this.registerFormVisible = !this.registerFormVisible//???不起作用
                 $("#register-form").css("display", 'inline-block');
-                changeClassBackground(5)
+                changeClassBackground(7)
                 this.centerDialogVisible = false
             },
             loggin() {
                 $("#login-form").css("display", 'inline-block');
-                changeClassBackground(5)
+                changeClassBackground(7)
                 this.centerDialogVisible = false
                 // $("#imloser").text("汉奸王九科必死");
             }
@@ -1569,10 +1631,15 @@ function onLoad() {
                                         message: '上传成功！',
                                         type: "success"
                                     });
+
+                                    eventDrawer.eventCounts++
+                                    navMenu.eventCounts++
+                                    eventDrawer.$forceUpdate()
                                 } else {
                                     _this.$message.error(this.eventResult.contents);
                                 }
                             }
+                            
                         })
                     } else {
                         console.log('error submit!!');

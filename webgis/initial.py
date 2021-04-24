@@ -150,6 +150,7 @@ def loginning():
     name = request.args.get('name')
     password = request.args.get('pass')
     print(name, password)
+    counts = 0 # 记录usr总共有多少个事件，如果登陆不成功，直接为0就行
     with sql.connect(dbpath+"usrinfo"+'.db') as conn:
         cur = conn.cursor()
         insertResult = "Is that all right？ All right!"
@@ -176,7 +177,14 @@ def loginning():
         finally:
             pass
 
-    return json.dumps({'success': success, 'contents': insertResult})
+    with sql.connect(dbpath+"usrdetails.db") as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "select * from usrdetails where usrname = '{}'".format(name))
+        events = cur.fetchall()
+        counts = len(events)
+
+    return json.dumps({'success': success,'counts':counts, 'contents': insertResult})
 
 
 @app.route('/submitEvent', methods=['get', 'post'])
@@ -238,10 +246,38 @@ def getEvents():
             events = "获取个人事件记录失败"
         finally:
             pass
-    
+
     print(eventsdic)
 
     return json.dumps({'success': success, 'counts': counts, 'contents': eventsdic})
+
+
+@app.route('/deleEvent', methods=['get', 'post'])
+def deleEvent():
+    usrname = request.args.get('usrname')
+    eventlonlat = request.args.get('eventlonlat')
+    eventtime = request.args.get('eventtime')
+    eventdetails = request.args.get('eventdetails')
+    # 注意数据库中的时间为添加时间
+    print(usrname, eventlonlat)
+    with sql.connect(dbpath+"usrdetails.db") as conn:
+        cur = conn.cursor()
+        success = True
+        try:
+            sqlsen = "delete from usrdetails where usrname = '{}' and eventtime = '{}' and eventlonlat = '{}' and eventdetails = '{}'".format(
+                usrname, eventtime, eventlonlat,  eventdetails)
+            print(sqlsen)
+            cur.execute(sqlsen)
+            success = True
+            deleteResult = "删除成功"
+        except Exception as unkownResult:
+            print(unkownResult)
+            success = False
+            deleteResult = "删除失败"
+        finally:
+            pass
+
+    return json.dumps({'success': success, 'contents': deleteResult})
 
 
 @app.route('/try', methods=['POST'])
