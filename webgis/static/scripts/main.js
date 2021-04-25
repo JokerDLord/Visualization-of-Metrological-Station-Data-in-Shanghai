@@ -186,27 +186,28 @@ function insertLocation(eventform, position) {
 }
 
 //逆地理编码 根据经纬度获取地名
-function getPositionByLonLats(lng, lat) {
+function getPositionByLonLats(lng, lat, callback) {
     // console.log("经度："+lng+"纬度"+lat);
     let lnglatXY = [lng, lat];// 地图上所标点的坐标
     AMap.service('AMap.Geocoder', function () {// 回调函数
-        geocoder = new AMap.Geocoder({});
+        var geocoder = new AMap.Geocoder({
+            // city:"全国"
+        });
         geocoder.getAddress(lnglatXY, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
                 // console.log(result.regeocode.formattedAddress);
                 let address = result.regeocode.formattedAddress;
                 console.log(result)
                 console.log(address);
-                return address
+                callback(address)
             } else {
                 console.log(status, result)
-                return ""
+                callback("")
             }
         });
     });
 }
 
-getPositionByLonLats(31.03195, 121.15318)
 
 // // 图标icon切换函数
 // function changeicon(marker, flg) {
@@ -221,13 +222,13 @@ getPositionByLonLats(31.03195, 121.15318)
 function syncHighlight(di, flg) {
     if (flg) {
         $(di.innerName).css('background', 'burlywood')
-        var themarker = eventsmarkers[di.innerID - 1]
+        let themarker = eventsmarkers[di.innerID - 1]
         themarker.setIcon(locatingicon)
 
     }
     else {
         $(di.innerName).css('background', 'white')
-        var themarker = eventsmarkers[di.innerID - 1]
+        let themarker = eventsmarkers[di.innerID - 1]
         themarker.setIcon(eventsicon)
 
     }
@@ -948,7 +949,7 @@ function onLoad() {
             show: false,
             usrpicture: "./static/img/smile.jpg",
             addPointWindow: false,
-            eventCounts : 0
+            eventCounts: 0
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -1103,10 +1104,12 @@ function onLoad() {
                                         let eventtime = navMenu.eventsdata[index].eventtime
                                         let [eventlon, eventlat] = navMenu.eventsdata[index].eventlonlat.split(",")
                                         let eventdetails = navMenu.eventsdata[index].eventdetails
-                                        let eventSite = getPositionByLonLats(eventlat, eventlon)
+                                        let eventSite = getPositionByLonLats(eventlon, eventlat,function(data){
+                                            $(pcontentid).html("事件记录地址： " + data + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
+                                        });
                                         // console.log(eventtime)
                                         $(headerid).text("事件添加时间: " + eventtime)
-                                        $(pcontentid).html("事件发生地址： " + eventSite + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
+                                        // $(pcontentid).html("事件发生地址： " + getPositionByLonLats(eventlon, eventlat) + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
 
                                         let theeventicon = eventsicon
 
@@ -1132,7 +1135,7 @@ function onLoad() {
                                         emarker.addTo(mymap)
 
 
-                                        eventsmarkers.push(emarker)//[index-1] = emarker
+                                        eventsmarkers[index-1] = emarker//.push(emarker)
                                         // emarker.name = "自定义事件点"//
 
                                         let speDomDiv = $("#drawer-card" + index)
@@ -1163,6 +1166,9 @@ function onLoad() {
 
 
                 }
+            },
+            readTiff(){
+                
             }
         },
         mounted() {
@@ -1249,6 +1255,7 @@ function onLoad() {
                     });
                 });
             }
+
         }
     })
 
@@ -1639,7 +1646,7 @@ function onLoad() {
                                     _this.$message.error(this.eventResult.contents);
                                 }
                             }
-                            
+
                         })
                     } else {
                         console.log('error submit!!');
@@ -1650,6 +1657,11 @@ function onLoad() {
             Dlocation(ruleForm) {
                 navMenu.positionmarker.setLatLng([mylatitude, mylongitude]);
                 insertLocation(this, navMenu.positionmarker.getLatLng())
+            },
+            canceladd: function () {
+                $("#event-card").css("display", 'none');
+                navMenu.addPointWindow = !navMenu.addPointWindow
+                navMenu.positionmarker.remove();
             }
         }
     })

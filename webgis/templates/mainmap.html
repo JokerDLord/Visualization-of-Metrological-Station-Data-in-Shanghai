@@ -130,7 +130,7 @@
         <span slot="title">站点显示</span>
       </el-menu-item>
 
-      <el-menu-item index="3" disabled>
+      <el-menu-item index="3" @click="readTiff">
         <i class="el-icon-document"></i>
         <span slot="title">TIFF文件读取</span>
       </el-menu-item>
@@ -271,11 +271,12 @@
           <el-input v-model="ruleForm.latitude" autocomplete="off" id="ruleFormLat"></el-input>
         </el-form-item>
         <el-form-item label="事件记录" prop="eventRecor">
-          <el-input type="textarea" v-model="ruleForm.eventRecor"></el-input>
+          <el-input type="textarea" v-model="ruleForm.eventRecor" style="min-height: 40px;"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">添加事件</el-button>
-          <el-button @click="Dlocation('ruleForm')">定位</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" size="small">添加事件</el-button>
+          <el-button @click="Dlocation('ruleForm')" size="small">定位</el-button>
+          <el-button @click="canceladd" size="small">取消</el-button>
         </el-form-item>
 
       </el-form>
