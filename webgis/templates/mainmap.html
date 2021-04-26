@@ -217,7 +217,10 @@
     </div>
   </transition>
 
+  <!-- 天气按钮和定位按钮 -->
   <el-button type="success" icon="el-icon-sunny" @click="showweatherInfo" id="weather-button" circle></el-button>
+  <el-button type="info" icon="el-icon-map-location" @click="setPosi" id="loco-button" circle></el-button>
+
   <div class="weather-info" style="display:none">
     <div id="today-info" style="height:200px;width:100%;">
 
@@ -229,7 +232,8 @@
 
   <!-- 登录后显示事件时弹出的抽屉 -->
   <el-drawer :visible.sync="drawer" :with-header="false" :modal="false" id="eventDrawer" :size=400
-    style="z-index:9999;text-align: center; opacity: 0.9;" :append-to-body="true" :close-on-click-modal="false" :destroy-on-close="true">
+    style="z-index:9999;text-align: center; opacity: 0.9;" :append-to-body="true" :close-on-click-modal="false"
+    :destroy-on-close="true">
     <!-- <span>我来啦大抽屉!</span> -->
     <el-card v-for="o in eventCounts" :key="o" :class="'drawer-card'+o" :id="'drawer-card'+o" shadow="hover"
       style="height: 200px;width:377px; margin: 7px 5px 7px 5px;border-radius: 5px;">
@@ -287,7 +291,15 @@
   <!-- </el-card> -->
 
 
+  <!--deps-->
+  <script src="https://unpkg.com/geotiff@1.0.0-beta.7/dist/geotiff.bundle.js"></script>
+  <script src="https://unpkg.com/plotty@0.4.4/dist/plotty.js"></script>
+  <script type="text/javascript" src="../static/scripts/leaflet-geotiff.js"></script>
+  <script type="text/javascript" src="../static/scripts/leaflet-geotiff-plotty.js"></script>
+  <script type="text/javascript" src="../static/scripts/leaflet-geotiff-vector-arrows.js"></script>
+  <script type="text/javascript" src="../static/scripts/leaflet-geotiff-rgb.js"></script>
 </body>
 <script type="text/javascript" src="../static/scripts/main.js"></script>
+
 
 </html>

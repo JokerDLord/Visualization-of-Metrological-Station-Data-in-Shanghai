@@ -2,6 +2,9 @@ let baseLayer;
 let Gaodest;
 let infodemo;
 let stationinfo;
+var mymap
+var tiflayer
+
 
 let mylatitude;
 let mylongitude;
@@ -949,7 +952,8 @@ function onLoad() {
             show: false,
             usrpicture: "./static/img/smile.jpg",
             addPointWindow: false,
-            eventCounts: 0
+            eventCounts: 0,
+            isReadtif: false
         },
         methods: {
             handleOpen(key, keyPath) {
@@ -960,7 +964,7 @@ function onLoad() {
             },
             nmsl() {
                 axios.post("/try", {
-                    ID: '狗汉奸',
+                    ID: 'nihaonihao',
                     aiming: '王九科',
                     age: 21
                 })
@@ -1104,7 +1108,7 @@ function onLoad() {
                                         let eventtime = navMenu.eventsdata[index].eventtime
                                         let [eventlon, eventlat] = navMenu.eventsdata[index].eventlonlat.split(",")
                                         let eventdetails = navMenu.eventsdata[index].eventdetails
-                                        let eventSite = getPositionByLonLats(eventlon, eventlat,function(data){
+                                        let eventSite = getPositionByLonLats(eventlon, eventlat, function (data) {
                                             $(pcontentid).html("事件记录地址： " + data + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
                                         });
                                         // console.log(eventtime)
@@ -1135,7 +1139,7 @@ function onLoad() {
                                         emarker.addTo(mymap)
 
 
-                                        eventsmarkers[index-1] = emarker//.push(emarker)
+                                        eventsmarkers[index - 1] = emarker//.push(emarker)
                                         // emarker.name = "自定义事件点"//
 
                                         let speDomDiv = $("#drawer-card" + index)
@@ -1167,8 +1171,100 @@ function onLoad() {
 
                 }
             },
-            readTiff(){
-                
+            readTiff() {
+                if (!this.isReadtif) {
+                    this.isReadtif = !this.isReadtif
+                    // GeoTIFF file URL. Currently only EPSG:4326 files are supported
+                    // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
+                    const url =
+                        "http://localhost:5555/static/MOD04_3KM01AVG.tif";
+                    const options = {
+                        // See renderer sections below.
+                        // One of: L.LeafletGeotiff.rgb, L.LeafletGeotiff.plotty, L.LeafletGeotiff.vectorArrows
+                        renderer: null,
+
+                        // Optional array specifying the corners of the data, e.g. [[40.712216, -74.22655], [40.773941, -74.12544]].
+                        // If omitted the image bounds will be read from the geoTIFF file (ModelTiepoint).
+                        bounds: [],
+
+                        // Optional geoTIFF band to read
+                        band: 0,
+
+                        // Optional geoTIFF image to read
+                        image: 0,
+
+                        // Optional clipping polygon, provided as an array of [lat,lon] coordinates.
+                        // Note that this is the Leaflet [lat,lon] convention, not geoJSON [lon,lat].
+                        clip: undefined,
+
+                        // Optional leaflet pane to add the layer.
+                        pane: "overlayPane",
+
+                        // Optional callback to handle failed URL request or parsing of tif
+                        onError: null,
+
+                        // Optional, override default GeoTIFF function used to load source data
+                        // Oneof: fromUrl, fromBlob, fromArrayBuffer
+                        sourceFunction: GeoTIFF.fromUrl,
+
+                        // Only required if sourceFunction is GeoTIFF.fromArrayBuffer
+                        arrayBuffer: null,
+
+                        // Optional nodata value (integer)
+                        // (to be ignored by getValueAtLatLng)
+                        noDataValue: undefined,
+
+                        // Optional key to extract nodata value from GeoTIFFImage
+                        // nested keys can be provided in dot notation, e.g. foo.bar.baz
+                        // (to be ignored by getValueAtLatLng)
+                        // this overrides noDataValue, the nodata value should be an integer
+                        noDataKey: undefined,
+
+                        // The block size to use for buffer
+                        blockSize: 65536,
+
+                        // Optional, override default opacity of 1 on the image added to the map
+                        opacity: 0.5,
+                    };
+
+                    const plottyRenderer = L.LeafletGeotiff.plotty({
+                        displayMin: 0,
+                        displayMax: 1,
+                        clampLow: false,
+                        clampHigh: false,
+                        colorScale: "portland"
+                    });
+                    tiflayer = L.leafletGeotiff(url, {
+                        renderer: plottyRenderer,
+                        opacity: 0.9,
+                    })
+                    tiflayer.addTo(mymap);
+                    let popup;
+                    mymap.on("mousemove", function (e) {
+                        // if (this.isReadtif)
+                        {
+                            if (!popup) {
+                                popup = L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).openOn(mymap);
+                            } else {
+                                popup.setLatLng([e.latlng.lat, e.latlng.lng]);
+                            }
+                            const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
+                            popup
+                                .setContent(`Possible value at point (experimental/buggy): ${value}`)
+                                .openOn(mymap);
+                        }
+
+                    });
+                    // create layer
+                    // let layer = L.leafletGeotiff(url, options).addTo(mymap);
+                } else {
+                    mymap.removeLayer(tiflayer)
+                    this.isReadtif = !this.isReadtif
+                    mymap.off('mousemove');
+                }
+
+
+
             }
         },
         mounted() {
@@ -1499,7 +1595,6 @@ function onLoad() {
                 $("#login-form").css("display", 'inline-block');
                 changeClassBackground(7)
                 this.centerDialogVisible = false
-                // $("#imloser").text("汉奸王九科必死");
             }
         }
     })
@@ -1674,6 +1769,16 @@ function onLoad() {
             fade: "这里放上啥？"
         },
         methods: {},
+    })
+
+    const posibutton = new Vue({
+        el: "#loco-button",
+        data: {},
+        methods: {
+            setPosi() {
+                mymap.flyTo(L.latLng([31.23138, 121.469897]), zoom = 10, options = { duration: 0.8 })
+            }
+        }
     })
 
     // 右上角的天气信息按钮

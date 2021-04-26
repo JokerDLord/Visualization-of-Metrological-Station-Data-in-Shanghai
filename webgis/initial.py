@@ -4,7 +4,7 @@ import random
 import math
 import json
 import sqlite3 as sql
-from flask import Flask
+from flask import Flask,url_for
 app = Flask(__name__)
 
 '''
@@ -61,6 +61,12 @@ def cover():
     return render_template('mainmap.html')
 
 # 查询单个站点的历史数据 8hours
+
+# @app.route('/wind')
+# def index():
+#     my_list_path = url_for('static',filename='wind_speed.tif')
+#     print(my_list_path)       # 结果为： /list/1/?count=111
+#     return my_list_path
 
 
 @app.route('/queryStation', methods=['get'])

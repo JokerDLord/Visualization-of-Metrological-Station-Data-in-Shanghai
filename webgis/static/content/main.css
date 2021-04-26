@@ -17,6 +17,7 @@ div {margin:0; padding:0; border:0;}
 	/* width:50px; */
 	
 }
+
 #weather-button
 {
 	z-index:999;
@@ -24,6 +25,15 @@ div {margin:0; padding:0; border:0;}
 	right:10px;
 	top: 50px;
 }
+#loco-button
+{
+	z-index:999;
+	position: fixed;
+	right:10px;
+	bottom: 50px;
+}
+
+
 
 .weather-info
 {
