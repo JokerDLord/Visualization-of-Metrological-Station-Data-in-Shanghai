@@ -606,7 +606,7 @@ function showstatisticEchart(allstationsData) {
                     singletimeData.push(dtimedata.AQI)
                     singletimeData.push(dtimedata.PM25)
                     singletimeData.push(dtimedata.PM10)
-                    singletimeData.push(dtimedata.CO)
+                    singletimeData.push(dtimedata.O3)
                     singletimeData.push(dtimedata.NO2)
                     singletimeData.push(dtimedata.SO2)
                     singletimeData.push(dtimedata.time)
@@ -662,10 +662,10 @@ function showstatisticEchart(allstationsData) {
                     indicator: [
                         { name: 'AQI', max: 300 },
                         { name: 'PM2.5', max: 250 },
-                        { name: 'PM10', max: 300 },
-                        { name: 'CO', max: 5 },
-                        { name: 'NO2', max: 200 },
-                        { name: 'SO2', max: 100 }
+                        { name: 'PM10', max: 420 },
+                        { name: 'O3', max: 800 },
+                        { name: 'NO2', max: 565 },
+                        { name: 'SO2', max: 1600/24 }
                     ],
                     shape: 'circle',
                     splitNumber: 5,
@@ -706,32 +706,6 @@ function showstatisticEchart(allstationsData) {
                             opacity: 0.05
                         }
                     },
-                    // {
-                    //     name: '上海',
-                    //     type: 'radar',
-                    //     lineStyle: lineStyle,
-                    //     data: dataSH,
-                    //     symbol: 'none',
-                    //     itemStyle: {
-                    //         color: '#B3E4A1'
-                    //     },
-                    //     areaStyle: {
-                    //         opacity: 0.05
-                    //     }
-                    // },
-                    // {
-                    //     name: '广州',
-                    //     type: 'radar',
-                    //     lineStyle: lineStyle,
-                    //     data: dataGZ,
-                    //     symbol: 'none',
-                    //     itemStyle: {
-                    //         color: 'rgb(238, 197, 102)'
-                    //     },
-                    //     areaStyle: {
-                    //         opacity: 0.05
-                    //     }
-                    // }
                 ]
             };
 
@@ -1276,7 +1250,7 @@ function onLoad() {
             // console.log(stationinfo)
 
             axios.post("/try", {
-                ID: '狗汉奸',
+                ID: '？？？',
                 aiming: '王九科',
                 age: 21
             })
