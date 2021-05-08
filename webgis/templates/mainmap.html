@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>上海气象站点数据可视化</title>
+  <title>上海市大气环境监测数据可视化系统</title>
   <link rel="stylesheet" type="text/css" href="../static/content/main.css" />
 
   <script type="text/javascript" src="../static/scripts/jquery-3.6.0.js"></script>
@@ -98,6 +98,9 @@
   <el-col :span="12" id="navMenu">
     <el-menu default-active="0" class="el-menu-vertical-left" @open="handleOpen" @close="handleClose"
       background-color="#545c64" text-color="#fff" active-text-color="#fff">
+      <div style="height: 65px;background-color: #545c64;text-align: center;">
+        <img style="text-align: center; height: 100%;width:100%" src="../static/img/上海市大气环境监测可视化系统.png"></img>
+      </div>
       <!--#ffd04b -->
       <!-- <template> -->
       <div class="usricon" id="usricon" @click="openLogin">
@@ -117,22 +120,22 @@
 
         <el-menu-item-group>
           <template slot="title">分组操作</template>
-          <el-menu-item index="1-1" @click="addPoint">添加事件点</el-menu-item>
+          <el-menu-item index="1-1" @click="addPoint">添加兴趣点</el-menu-item>
           <!-- <el-menu-item index="1-2">删除事件点</el-menu-item> -->
         </el-menu-item-group>
 
-        <el-menu-item index="1-3" @click="showEvent">显示事件</el-menu-item>
+        <el-menu-item index="1-3" @click="showEvent">显示兴趣点</el-menu-item>
 
       </el-submenu>
 
       <el-menu-item index="2" v-on:click="showStation">
         <i class="el-icon-location"></i>
-        <span slot="title">站点显示</span>
+        <span slot="title">监测数据显示</span>
       </el-menu-item>
 
       <el-menu-item index="3" @click="showStatis">
         <i class="el-icon-setting"></i>
-        <span slot="title">指标雷达图</span>
+        <span slot="title">AQI指标雷达图</span>
       </el-menu-item>
 
       <el-menu-item index="4" @click="readTiff">
@@ -142,7 +145,18 @@
 
     </el-menu>
   </el-col>
-  </el-row>
+
+    <!-- 定义一个geotiff读取的对话框 -->
+    <el-dialog title="TIFF文件读取" id="tiffread" :visible.sync="tiffDialogVisible" width="30%" center>
+      <span v-text="info" style="text-align: center; vertical-align: middle;"></span><br>
+      <span slot="footer" class="dialog-footer" style="text-align: center; vertical-align: middle;">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="readgTiff">读 取</el-button>
+      </span>
+    </el-dialog>
+
+
+
   <!-- 定义一个登录界面的对话框 -->
   <el-dialog title="用户登录" id="login-1" :visible.sync="centerDialogVisible" width="30%" center>
     <span v-text="info" style="text-align: center; vertical-align: middle;"></span><br>

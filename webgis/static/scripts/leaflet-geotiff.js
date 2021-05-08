@@ -363,6 +363,7 @@
           plotCanvas.height = size.y;
           var ctx = plotCanvas.getContext("2d");
           ctx.clearRect(0, 0, plotCanvas.width, plotCanvas.height);
+          this._image.crossOrigin = 'Anonymous'// //解决跨域
           this._image.src = plotCanvas.toDataURL();
           return;
         }
@@ -381,6 +382,8 @@
         //var mask = this.createMask(size, args);
         //ctx.globalCompositeOperation = 'destination-out';
         //ctx.drawImage(mask, 0, 0);
+
+        this._image.crossOrigin = 'Anonymous'// //解决跨域
 
         this._image.src = String(plotCanvas.toDataURL());
       }

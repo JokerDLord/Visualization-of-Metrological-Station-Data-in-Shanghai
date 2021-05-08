@@ -1083,10 +1083,10 @@ function onLoad() {
                                         let [eventlon, eventlat] = navMenu.eventsdata[index].eventlonlat.split(",")
                                         let eventdetails = navMenu.eventsdata[index].eventdetails
                                         let eventSite = getPositionByLonLats(eventlon, eventlat, function (data) {
-                                            $(pcontentid).html("事件记录地址： " + data + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
+                                            $(pcontentid).html("地址： " + data + "<br>经度: " + eventlon + "  <br>纬度: " + eventlat + "<br>详情：<br> " + eventdetails)
                                         });
                                         // console.log(eventtime)
-                                        $(headerid).text("事件添加时间: " + eventtime)
+                                        $(headerid).text("兴趣点添加时间: " + eventtime)
                                         // $(pcontentid).html("事件发生地址： " + getPositionByLonLats(eventlon, eventlat) + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
 
                                         let theeventicon = eventsicon
@@ -1147,90 +1147,9 @@ function onLoad() {
             },
             readTiff() {
                 if (!this.isReadtif) {
-                    this.isReadtif = !this.isReadtif
-                    // GeoTIFF file URL. Currently only EPSG:4326 files are supported
-                    // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
-                    const url =
-                        "http://localhost:5555/static/MOD04_3KM01AVG.tif";
-                    const options = {
-                        // See renderer sections below.
-                        // One of: L.LeafletGeotiff.rgb, L.LeafletGeotiff.plotty, L.LeafletGeotiff.vectorArrows
-                        renderer: null,
-
-                        // Optional array specifying the corners of the data, e.g. [[40.712216, -74.22655], [40.773941, -74.12544]].
-                        // If omitted the image bounds will be read from the geoTIFF file (ModelTiepoint).
-                        bounds: [],
-
-                        // Optional geoTIFF band to read
-                        band: 0,
-
-                        // Optional geoTIFF image to read
-                        image: 0,
-
-                        // Optional clipping polygon, provided as an array of [lat,lon] coordinates.
-                        // Note that this is the Leaflet [lat,lon] convention, not geoJSON [lon,lat].
-                        clip: undefined,
-
-                        // Optional leaflet pane to add the layer.
-                        pane: "overlayPane",
-
-                        // Optional callback to handle failed URL request or parsing of tif
-                        onError: null,
-
-                        // Optional, override default GeoTIFF function used to load source data
-                        // Oneof: fromUrl, fromBlob, fromArrayBuffer
-                        sourceFunction: GeoTIFF.fromUrl,
-
-                        // Only required if sourceFunction is GeoTIFF.fromArrayBuffer
-                        arrayBuffer: null,
-
-                        // Optional nodata value (integer)
-                        // (to be ignored by getValueAtLatLng)
-                        noDataValue: undefined,
-
-                        // Optional key to extract nodata value from GeoTIFFImage
-                        // nested keys can be provided in dot notation, e.g. foo.bar.baz
-                        // (to be ignored by getValueAtLatLng)
-                        // this overrides noDataValue, the nodata value should be an integer
-                        noDataKey: undefined,
-
-                        // The block size to use for buffer
-                        blockSize: 65536,
-
-                        // Optional, override default opacity of 1 on the image added to the map
-                        opacity: 0.5,
-                    };
-
-                    const plottyRenderer = L.LeafletGeotiff.plotty({
-                        displayMin: 0,
-                        displayMax: 1,
-                        clampLow: false,
-                        clampHigh: false,
-                        colorScale: "portland"
-                    });
-                    tiflayer = L.leafletGeotiff(url, {
-                        renderer: plottyRenderer,
-                        opacity: 0.9,
-                    })
-                    tiflayer.addTo(mymap);
-                    let popup;
-                    mymap.on("mousemove", function (e) {
-                        // if (this.isReadtif)
-                        {
-                            if (!popup) {
-                                popup = L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).openOn(mymap);
-                            } else {
-                                popup.setLatLng([e.latlng.lat, e.latlng.lng]);
-                            }
-                            const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
-                            popup
-                                .setContent(`Possible value at point (experimental/buggy): ${value}`)
-                                .openOn(mymap);
-                        }
-
-                    });
-                    // create layer
-                    // let layer = L.leafletGeotiff(url, options).addTo(mymap);
+                    
+                    tiffread.tiffDialogVisible = true;
+                    
                 } else {
                     mymap.removeLayer(tiflayer)
                     this.isReadtif = !this.isReadtif
@@ -1269,7 +1188,7 @@ function onLoad() {
         data: {
             drawer: false,
             eventCounts: 0, //可在首次用户登录时就更新
-            title: "事件添加时间",
+            title: "兴趣点添加时间",
             lon: "114",
             lat: "514",
             details: "like the ceiling cant hold us"
@@ -1550,7 +1469,8 @@ function onLoad() {
 
         }
     })
-
+    
+    // 登录或注册的对话框
     const login1 = new Vue({
         el: "#login-1",
         data: {
@@ -1569,6 +1489,107 @@ function onLoad() {
                 $("#login-form").css("display", 'inline-block');
                 changeClassBackground(7)
                 this.centerDialogVisible = false
+            }
+        }
+    })
+    //输入tiff图url地址的对话框
+    const tiffread = new Vue({
+        el:"#tiffread",
+        data:{
+            info:"请输入Tiff图url:",
+            tiffDialogVisible:false
+        },
+        methods:{
+            cancel(){
+                this.tiffDialogVisible = false
+                
+            },
+            readgTiff(){
+                // GeoTIFF file URL. Currently only EPSG:4326 files are supported
+                    // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
+                    const url =
+                        "http://localhost:5555/static/MOD04_3KM01AVG.tif";
+                    const options = {
+                        // See renderer sections below.
+                        // One of: L.LeafletGeotiff.rgb, L.LeafletGeotiff.plotty, L.LeafletGeotiff.vectorArrows
+                        renderer: null,
+
+                        // Optional array specifying the corners of the data, e.g. [[40.712216, -74.22655], [40.773941, -74.12544]].
+                        // If omitted the image bounds will be read from the geoTIFF file (ModelTiepoint).
+                        bounds: [],
+
+                        // Optional geoTIFF band to read
+                        band: 0,
+
+                        // Optional geoTIFF image to read
+                        image: 0,
+
+                        // Optional clipping polygon, provided as an array of [lat,lon] coordinates.
+                        // Note that this is the Leaflet [lat,lon] convention, not geoJSON [lon,lat].
+                        clip: undefined,
+
+                        // Optional leaflet pane to add the layer.
+                        pane: "overlayPane",
+
+                        // Optional callback to handle failed URL request or parsing of tif
+                        onError: null,
+
+                        // Optional, override default GeoTIFF function used to load source data
+                        // Oneof: fromUrl, fromBlob, fromArrayBuffer
+                        sourceFunction: GeoTIFF.fromUrl,
+
+                        // Only required if sourceFunction is GeoTIFF.fromArrayBuffer
+                        arrayBuffer: null,
+
+                        // Optional nodata value (integer)
+                        // (to be ignored by getValueAtLatLng)
+                        noDataValue: undefined,
+
+                        // Optional key to extract nodata value from GeoTIFFImage
+                        // nested keys can be provided in dot notation, e.g. foo.bar.baz
+                        // (to be ignored by getValueAtLatLng)
+                        // this overrides noDataValue, the nodata value should be an integer
+                        noDataKey: undefined,
+
+                        // The block size to use for buffer
+                        blockSize: 65536,
+
+                        // Optional, override default opacity of 1 on the image added to the map
+                        opacity: 0.5,
+                    };
+
+                    const plottyRenderer = L.LeafletGeotiff.plotty({
+                        displayMin: 0,
+                        displayMax: 1,
+                        clampLow: false,
+                        clampHigh: false,
+                        colorScale: "portland"
+                    });
+                    tiflayer = L.leafletGeotiff(url, {
+                        renderer: plottyRenderer,
+                        opacity: 0.9,
+                    })
+                    tiflayer.addTo(mymap);
+                    let popup;
+                    mymap.on("mousemove", function (e) {
+                        // if (this.isReadtif)
+                        {
+                            if (!popup) {
+                                popup = L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).openOn(mymap);
+                            } else {
+                                popup.setLatLng([e.latlng.lat, e.latlng.lng]);
+                            }
+                            const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
+                            popup
+                                .setContent(`Possible value at point (experimental/buggy): ${value}`)
+                                .openOn(mymap);
+                        }
+
+                    });
+                    this.tiffDialogVisible = false
+                    navMenu.isReadtif = !navMenu.isReadtif
+                    // create layer
+                    // let layer = L.leafletGeotiff(url, options).addTo(mymap);
             }
         }
     })
@@ -1660,7 +1681,7 @@ function onLoad() {
             };
             var checkevent = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入事件详情'));
+                    callback(new Error('请输入详情'));
                 } else {
                     callback();
                 }

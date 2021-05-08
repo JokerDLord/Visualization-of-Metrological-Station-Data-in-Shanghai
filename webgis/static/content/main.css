@@ -92,7 +92,7 @@ div {margin:0; padding:0; border:0;}
 	z-index: 99;
 	position: absolute;
 	float: left;
-	width: 250px;
+	width: 260px;
 	height: 100%;
 	top:0;
 	bottom:0;
@@ -106,6 +106,7 @@ div {margin:0; padding:0; border:0;}
 }
 .usricon
 {
+	cursor: pointer;
 	display: block;
 	text-align: center;
 }
@@ -338,7 +339,7 @@ usricon-avator2
 	vertical-align: middle;
 	border-radius: 8px;
 	box-shadow: 0 4px 14px 0 rgba(0,0,0,.1);
-	/* overflow: hidden; */
+	overflow-y: scroll;
 	text-align: center;
 	vertical-align: middle;
 	/* transform: translate(-50%,-50%); */
