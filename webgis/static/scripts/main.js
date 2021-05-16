@@ -75,18 +75,48 @@ let yanzhongicon = L.icon({
 
 let locatingicon = L.icon({
     iconUrl: '../static/Markers/站点.png',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
     // popupAnchor:[]
 })
 
 let eventsicon = L.icon({
     iconUrl: '../static/Markers/事件站点.png',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
     // popupAnchor:[]
 })
 
+let school = L.icon({
+    iconUrl: '../static/Markers/学校.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    // popupAnchor:[]
+})
+let home = L.icon({
+    iconUrl: '../static/Markers/家.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    // popupAnchor:[]
+})
+let entertain = L.icon({
+    iconUrl: '../static/Markers/娱乐.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    // popupAnchor:[]
+})
+let job = L.icon({
+    iconUrl: '../static/Markers/工作.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    // popupAnchor:[]
+})
+let tour = L.icon({
+    iconUrl: '../static/Markers/旅游.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    // popupAnchor:[]
+})
 
 
 /////////////基于高德api的定位功能
@@ -221,21 +251,37 @@ function getPositionByLonLats(lng, lat, callback) {
 //     }
 // }
 
+function getpoiIcon(ptype) {
+    let icon;
+    if (ptype == "普通事件点") icon = eventsicon;
+    else if (ptype == "家") icon = home;
+    else if (ptype == "学校") icon = school;
+    else if (ptype == "工作场所") icon = job;
+    else if (ptype == "旅游地") icon = tour;
+    else if (ptype == "娱乐场所") icon = entertain;
+
+    return icon
+}
+
+
 // 高亮函数
-function syncHighlight(di, flg) {
+function syncHighlight(di, marker, flg) {
     if (flg) {
         $(di.innerName).css('background', 'burlywood')
         let themarker = eventsmarkers[di.innerID - 1]
-        themarker.setIcon(locatingicon)
+        // themarker.setIcon(locatingicon)
+        themarker.setOpacity(0.7)
 
     }
     else {
         $(di.innerName).css('background', 'white')
         let themarker = eventsmarkers[di.innerID - 1]
-        themarker.setIcon(eventsicon)
+        // themarker.setIcon(eventsicon)
+        themarker.setOpacity(1)
 
     }
 }
+
 
 
 
@@ -665,7 +711,7 @@ function showstatisticEchart(allstationsData) {
                         { name: 'PM10', max: 420 },
                         { name: 'O3', max: 800 },
                         { name: 'NO2', max: 565 },
-                        { name: 'SO2', max: 1600/24 }
+                        { name: 'SO2', max: 1600 / 24 }
                     ],
                     shape: 'circle',
                     splitNumber: 5,
@@ -1079,17 +1125,21 @@ function onLoad() {
                                         let headerid = "#drawerc-headerspan" + (index)
                                         let pcontentid = "#drawerc-p" + (index)
 
+                                        let pointname = navMenu.eventsdata[index].pointname
+                                        let ptype = navMenu.eventsdata[index].ptype
                                         let eventtime = navMenu.eventsdata[index].eventtime
                                         let [eventlon, eventlat] = navMenu.eventsdata[index].eventlonlat.split(",")
                                         let eventdetails = navMenu.eventsdata[index].eventdetails
+                                        let poiicon = getpoiIcon(ptype)
+
                                         let eventSite = getPositionByLonLats(eventlon, eventlat, function (data) {
-                                            $(pcontentid).html("地址： " + data + "<br>经度: " + eventlon + "  <br>纬度: " + eventlat + "<br>详情：<br> " + eventdetails)
+                                            $(pcontentid).html("添加时间： " + eventtime + "<br>地址： " + data + "<br>经度: " + eventlon + "  <br>纬度: " + eventlat + "<br>详情：<br> " + eventdetails)
                                         });
                                         // console.log(eventtime)
-                                        $(headerid).text("兴趣点添加时间: " + eventtime)
+                                        $(headerid).html(ptype + " - " + pointname)
                                         // $(pcontentid).html("事件发生地址： " + getPositionByLonLats(eventlon, eventlat) + "<br>事件点经度: " + eventlon + "  <br>事件点纬度: " + eventlat + "<br>事件详情：<br> " + eventdetails)
 
-                                        let theeventicon = eventsicon
+                                        let theeventicon = poiicon
 
 
                                         var emarker = L.marker([eventlat, eventlon], { icon: theeventicon, draggable: false })
@@ -1099,14 +1149,14 @@ function onLoad() {
                                         emarker.on({
                                             'mouseover': function (e) {
                                                 // changeicon(this, true)
-                                                syncHighlight(speDomDiv, true)
+                                                syncHighlight(speDomDiv, emarker, true)
                                             },
                                             'mouseout': function (e) {
                                                 // changeicon(this, false)
-                                                syncHighlight(speDomDiv, false)
+                                                syncHighlight(speDomDiv, emarker, false)
                                             },
                                             'click': function (e) {
-                                                mymap.flyTo(this.getLatLng(), zoom = 12, options = { duration: 0.8 })
+                                                mymap.flyTo(this.getLatLng(), zoom = 13, options = { duration: 0.8 })
                                             }
                                         })
 
@@ -1120,13 +1170,13 @@ function onLoad() {
                                         speDomDiv.innerID = index
                                         speDomDiv.innerName = "#drawer-card" + index
                                         speDomDiv.mouseover(function () {
-                                            syncHighlight(speDomDiv, true);
+                                            syncHighlight(speDomDiv, emarker, true);
                                         });
                                         speDomDiv.mouseout(function () {
-                                            syncHighlight(speDomDiv, false);
+                                            syncHighlight(speDomDiv, emarker, false);
                                         });
                                         speDomDiv.click(function () {
-                                            mymap.flyTo(eventsmarkers[speDomDiv.innerID - 1].getLatLng(), zoom = 12, options = { duration: 0.8 });
+                                            mymap.flyTo(eventsmarkers[speDomDiv.innerID - 1].getLatLng(), zoom = 13, options = { duration: 0.8 });
                                         });
                                         eventDrawer.$forceUpdate()
                                     }
@@ -1147,17 +1197,25 @@ function onLoad() {
             },
             readTiff() {
                 if (!this.isReadtif) {
-                    
+
                     tiffread.tiffDialogVisible = true;
-                    
+
                 } else {
                     mymap.removeLayer(tiflayer)
                     this.isReadtif = !this.isReadtif
-                    mymap.off('mousemove');
+                    mymap.off('click');
                 }
+            },
+            showIDW(){
+                if (!this.isReadtif) {
 
+                    selecttiff.selectDialogVisible = true;
 
-
+                } else {
+                    mymap.removeLayer(tiflayer)
+                    this.isReadtif = !this.isReadtif
+                    mymap.off('click');
+                }
             }
         },
         mounted() {
@@ -1469,7 +1527,7 @@ function onLoad() {
 
         }
     })
-    
+
     // 登录或注册的对话框
     const login1 = new Vue({
         el: "#login-1",
@@ -1492,105 +1550,202 @@ function onLoad() {
             }
         }
     })
+
+    const selecttiff = new Vue({
+        el:"#selecttif",
+        data:{
+            selectDialogVisible:false,
+            options: [{
+                value: 'AQI',
+                label: 'AQI'
+              }, {
+                value: 'PM25',
+                label: 'PM25'
+              }, {
+                value: 'PM10',
+                label: 'PM10'
+              }, {
+                value: 'CO',
+                label: 'CO'
+              }, {
+                value: 'NO2',
+                label: 'NO2'
+              }, {
+                value: 'O3',
+                label: 'O3'
+              }, {
+                value: 'SO2',
+                label: 'SO2'
+              }],
+              value: ''
+        },
+        methods:{ 
+            cancel() {
+                this.selectDialogVisible = false
+
+            },
+            selectgTif(){
+                // console.log(this.value)
+                let idx = this.value
+                this.cancel()
+                //这里调用tiffread对象的读取tif模块进行显示，当然先要确定好tiff图的url地址 display最大值最小值 借助ajax在后台实现！
+                $.ajax({
+                    url: "/getTiffurl",
+                    methods: "get",
+                    data: {idx:idx},
+                    // contentType: 'application/json',
+                    success: function (response) {
+                        let resdata = JSON.parse(response)
+                        if (resdata.success) {
+                            console.log(resdata)
+                            tiffread.tifurl = resdata.contents.tifurl
+                            console.log(tiffread.tifurl)
+                            tiffread.displayMinmax = [resdata.contents.min,resdata.contents.max]
+                            console.log(tiffread.displayMinmax)
+                            tiffread.readTiff()
+                        }
+                        else {
+                            console.log(resdata.error);
+                            return;
+                        }
+                    }
+                })
+
+            }
+        }
+    })
+
+
     //输入tiff图url地址的对话框
     const tiffread = new Vue({
-        el:"#tiffread",
-        data:{
-            info:"请输入Tiff图url:",
-            tiffDialogVisible:false
-        },
-        methods:{
-            cancel(){
-                this.tiffDialogVisible = false
-                
-            },
-            readgTiff(){
-                // GeoTIFF file URL. Currently only EPSG:4326 files are supported
-                    // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
-                    const url =
-                        "http://localhost:5555/static/MOD04_3KM01AVG.tif";
-                    const options = {
-                        // See renderer sections below.
-                        // One of: L.LeafletGeotiff.rgb, L.LeafletGeotiff.plotty, L.LeafletGeotiff.vectorArrows
-                        renderer: null,
-
-                        // Optional array specifying the corners of the data, e.g. [[40.712216, -74.22655], [40.773941, -74.12544]].
-                        // If omitted the image bounds will be read from the geoTIFF file (ModelTiepoint).
-                        bounds: [],
-
-                        // Optional geoTIFF band to read
-                        band: 0,
-
-                        // Optional geoTIFF image to read
-                        image: 0,
-
-                        // Optional clipping polygon, provided as an array of [lat,lon] coordinates.
-                        // Note that this is the Leaflet [lat,lon] convention, not geoJSON [lon,lat].
-                        clip: undefined,
-
-                        // Optional leaflet pane to add the layer.
-                        pane: "overlayPane",
-
-                        // Optional callback to handle failed URL request or parsing of tif
-                        onError: null,
-
-                        // Optional, override default GeoTIFF function used to load source data
-                        // Oneof: fromUrl, fromBlob, fromArrayBuffer
-                        sourceFunction: GeoTIFF.fromUrl,
-
-                        // Only required if sourceFunction is GeoTIFF.fromArrayBuffer
-                        arrayBuffer: null,
-
-                        // Optional nodata value (integer)
-                        // (to be ignored by getValueAtLatLng)
-                        noDataValue: undefined,
-
-                        // Optional key to extract nodata value from GeoTIFFImage
-                        // nested keys can be provided in dot notation, e.g. foo.bar.baz
-                        // (to be ignored by getValueAtLatLng)
-                        // this overrides noDataValue, the nodata value should be an integer
-                        noDataKey: undefined,
-
-                        // The block size to use for buffer
-                        blockSize: 65536,
-
-                        // Optional, override default opacity of 1 on the image added to the map
-                        opacity: 0.5,
-                    };
-
-                    const plottyRenderer = L.LeafletGeotiff.plotty({
-                        displayMin: 0,
-                        displayMax: 1,
-                        clampLow: false,
-                        clampHigh: false,
-                        colorScale: "portland"
-                    });
-                    tiflayer = L.leafletGeotiff(url, {
-                        renderer: plottyRenderer,
-                        opacity: 0.9,
-                    })
-                    tiflayer.addTo(mymap);
-                    let popup;
-                    mymap.on("mousemove", function (e) {
-                        // if (this.isReadtif)
-                        {
-                            if (!popup) {
-                                popup = L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).openOn(mymap);
-                            } else {
-                                popup.setLatLng([e.latlng.lat, e.latlng.lng]);
-                            }
-                            const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
-                            popup
-                                .setContent(`Possible value at point (experimental/buggy): ${value}`)
-                                .openOn(mymap);
-                        }
-
-                    });
-                    this.tiffDialogVisible = false
-                    navMenu.isReadtif = !navMenu.isReadtif
-                    // create layer
-                    // let layer = L.leafletGeotiff(url, options).addTo(mymap);
+        el: "#tiffread",
+        data: {
+            info: "请输入Tiff图url:",
+            tiffDialogVisible: false,
+            tifurl: "",   //"http://localhost:5555/static/MOD04_3KM01AVG.tif"
+            urllst: [],
+            displayMinmax:[0,256],
+            marks: {
+                0: '0',
+                64: '64',
+                128: '128'
             }
+        },
+        methods: {
+            cancel() {
+                this.tiffDialogVisible = false
+
+            },
+            readgTiff() {
+                // GeoTIFF file URL. Currently only EPSG:4326 files are supported
+                // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
+                const url =
+                    this.tifurl;
+                const options = {
+                    // See renderer sections below.
+                    // One of: L.LeafletGeotiff.rgb, L.LeafletGeotiff.plotty, L.LeafletGeotiff.vectorArrows
+                    renderer: null,
+
+                    // Optional array specifying the corners of the data, e.g. [[40.712216, -74.22655], [40.773941, -74.12544]].
+                    // If omitted the image bounds will be read from the geoTIFF file (ModelTiepoint).
+                    bounds: [],
+
+                    // Optional geoTIFF band to read
+                    band: 0,
+
+                    // Optional geoTIFF image to read
+                    image: 0,
+
+                    // Optional clipping polygon, provided as an array of [lat,lon] coordinates.
+                    // Note that this is the Leaflet [lat,lon] convention, not geoJSON [lon,lat].
+                    clip: undefined,
+
+                    // Optional leaflet pane to add the layer.
+                    pane: "overlayPane",
+
+                    // Optional callback to handle failed URL request or parsing of tif
+                    onError: null,
+
+                    // Optional, override default GeoTIFF function used to load source data
+                    // Oneof: fromUrl, fromBlob, fromArrayBuffer
+                    sourceFunction: GeoTIFF.fromUrl,
+
+                    // Only required if sourceFunction is GeoTIFF.fromArrayBuffer
+                    arrayBuffer: null,
+
+                    // Optional nodata value (integer)
+                    // (to be ignored by getValueAtLatLng)
+                    noDataValue: undefined,
+
+                    // Optional key to extract nodata value from GeoTIFFImage
+                    // nested keys can be provided in dot notation, e.g. foo.bar.baz
+                    // (to be ignored by getValueAtLatLng)
+                    // this overrides noDataValue, the nodata value should be an integer
+                    noDataKey: undefined,
+
+                    // The block size to use for buffer
+                    blockSize: 65536,
+
+                    // Optional, override default opacity of 1 on the image added to the map
+                    opacity: 0.5,
+                };
+
+                const plottyRenderer = L.LeafletGeotiff.plotty({
+                    displayMin: this.displayMinmax[0],
+                    displayMax: this.displayMinmax[1],
+                    clampLow: false,
+                    clampHigh: false,
+                    colorScale: "portland"
+                });
+                tiflayer = L.leafletGeotiff(url, {
+                    renderer: plottyRenderer,
+                    opacity: 0.9,
+                })
+                tiflayer.addTo(mymap);
+                let popup;
+                mymap.on("click", function (e) {
+                    // if (this.isReadtif)
+                    {
+                        if (!popup) {
+                            popup = L.popup().setLatLng([e.latlng.lat, e.latlng.lng]).openOn(mymap);
+                        } else {
+                            popup.setLatLng([e.latlng.lat, e.latlng.lng]);
+                        }
+                        const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
+                        popup
+                            .setContent(`Value at this point (experimental/buggy): ${value}`)
+                            .openOn(mymap);
+                    }
+
+                });
+                this.tiffDialogVisible = false
+                navMenu.isReadtif = !navMenu.isReadtif
+                // create layer
+                // let layer = L.leafletGeotiff(url, options).addTo(mymap);
+            },
+            handleSelect() {
+
+            },
+            queryUrl(queryString, cb) {
+                let url = this.urllst;
+                let results = queryString ? url.filter(this.createFilter(queryString)) : url;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                console.log(item);
+            },
+            loadAll() {
+                return [{ "value": "http://localhost:5555/static/MOD04_3KM01AVG.tif" }]
+            }
+        },
+        mounted() {
+            this.urllst = this.loadAll()
         }
     })
 
@@ -1688,6 +1843,8 @@ function onLoad() {
             };
             return {
                 ruleForm: {
+                    ptype: '',
+                    pname: '',
                     longitude: '',
                     latitude: '',
                     eventRecor: '',
@@ -1704,7 +1861,34 @@ function onLoad() {
                     eventRecor: [
                         { validator: checkevent, trigger: 'blur' }
                     ]
-                }
+                },
+                pointtypes: [
+                    {
+                        value: "普通事件点",
+                        label: "普通事件点"
+                    },
+                    {
+                        value: "家",
+                        label: "家"
+                    },
+                    {
+                        value: "学校",
+                        label: "学校"
+                    },
+                    {
+                        value: "工作场所",
+                        label: "工作场所"
+                    },
+                    {
+                        value: "旅游地",
+                        label: "旅游地"
+                    },
+                    {
+                        value: "娱乐场所",
+                        label: "娱乐场所"
+                    }
+                ],
+                ptvalue: ""
             };
         },
         methods: {
@@ -1752,6 +1936,7 @@ function onLoad() {
                 $("#event-card").css("display", 'none');
                 navMenu.addPointWindow = !navMenu.addPointWindow
                 navMenu.positionmarker.remove();
+                // console.log(this.ruleForm.ptype,this.ruleForm.pname)
             }
         }
     })

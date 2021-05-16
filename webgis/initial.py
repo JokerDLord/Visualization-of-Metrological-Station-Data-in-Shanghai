@@ -4,7 +4,11 @@ import random
 import math
 import json
 import sqlite3 as sql
-from flask import Flask,url_for
+from flask import Flask, url_for
+from osgeo import gdal
+import datetime
+import numpy as np
+
 app = Flask(__name__)
 
 '''
@@ -54,6 +58,12 @@ def getLonlat():
             (lon, lat) = cur.fetchall()[0]
             stalonlat[staname] = [eval(lon), eval(lat)]
         # print(stalonlat)
+
+# 获取当前时间
+
+
+def getTime():
+    return (datetime.datetime.now()-datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")
 
 
 @app.route('/')
@@ -156,7 +166,7 @@ def loginning():
     name = request.args.get('name')
     password = request.args.get('pass')
     print(name, password)
-    counts = 0 # 记录usr总共有多少个事件，如果登陆不成功，直接为0就行
+    counts = 0  # 记录usr总共有多少个事件，如果登陆不成功，直接为0就行
     with sql.connect(dbpath+"usrinfo"+'.db') as conn:
         cur = conn.cursor()
         insertResult = "Is that all right？ All right!"
@@ -190,11 +200,13 @@ def loginning():
         events = cur.fetchall()
         counts = len(events)
 
-    return json.dumps({'success': success,'counts':counts, 'contents': insertResult})
+    return json.dumps({'success': success, 'counts': counts, 'contents': insertResult})
 
 
 @app.route('/submitEvent', methods=['get', 'post'])
 def submitevent():
+    ptype = request.args.get('ptype')
+    pname = request.args.get('pname')
     elongitude = request.args.get('longitude')
     elatitude = request.args.get('latitude')
     erecord = request.args.get('eventRecor')
@@ -202,13 +214,13 @@ def submitevent():
     usrname = request.args.get('usrname')
     others = ""  # 暂时无其他信息
     # 注意数据库中的时间为添加时间
-    print(elongitude, elatitude, erecord, addtime, usrname)
+    print(ptype, pname, elongitude, elatitude, erecord, addtime, usrname)
     with sql.connect(dbpath+"usrdetails.db") as conn:
         cur = conn.cursor()
         success = True
         try:
-            cur.execute("insert into usrdetails values('{}','{}','{}','{}','{}')".format(
-                usrname, addtime, (elongitude+","+elatitude), erecord, others))
+            cur.execute("insert into usrdetails values('{}','{}','{}','{}','{}','{}','{}')".format(
+                usrname, pname, addtime, (elongitude+","+elatitude), erecord, others, ptype))
             success = True
             eventResult = "上传个人时间记录成功"
         except Exception as unkownResult:
@@ -240,9 +252,12 @@ def getEvents():
             counts = len(events)
             for i in range(counts):
                 dici = {}
-                dici['eventtime'] = events[i][1]
-                dici['eventlonlat'] = events[i][2]
-                dici['eventdetails'] = events[i][3]
+                dici['pointname'] = events[i][1]
+                dici['eventtime'] = events[i][2]
+                dici['eventlonlat'] = events[i][3]
+                dici['eventdetails'] = events[i][4]
+                dici['otherinfo'] = events[i][5]
+                dici['ptype'] = events[i][6]
 
                 eventsdic[str(i+1)] = dici
 
@@ -327,6 +342,27 @@ def getStaSata():
     # print(content_dic)
 
     return json.dumps({'success': True, 'contents': content_dic})
+
+
+@app.route('/getTiffurl', methods=['get'])
+def getTiffurl():
+    idx = str(request.args.get('idx'))
+    print(idx)
+
+    timenow = getTime()
+    tifpath = "static/tiffDocument/"+ timenow + "/" + idx + " " + timenow + "_warp.tif"
+    print(tifpath,1)
+    content_dic = {}
+    content_dic['tifurl'] = "http://localhost:5555/" + tifpath 
+    #读取最大最小值
+    ds = gdal.Open(tifpath) 
+    bd = ds.GetRasterBand(1)
+    data = bd.ReadAsArray()
+    content_dic['min'] = np.amin(data)
+    content_dic['max'] = np.amax(data)
+
+    return json.dumps({'success': True, 'contents': content_dic})
+
 
 
 if __name__ == '__main__':

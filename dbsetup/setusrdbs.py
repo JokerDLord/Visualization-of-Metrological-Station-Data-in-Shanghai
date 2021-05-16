@@ -15,10 +15,12 @@ def creatdbs2():
     connn = sql.connect("dbs/usrDetails.db")
     connn.execute('''CREATE TABLE usrdetails
     (usrname   TEXT   NOT NULL,
+     pointname text not null,
     eventtime text NOT NULL,
     eventlonlat text NOT NULL,
-    eventdetails text NOT NULL,
-    otherinfo text
+    eventdetails text,
+    otherinfo text,
+    pointtype text
     );''')
     connn.commit()
     connn.close()

@@ -10,6 +10,8 @@ import threading
 import schedule 
 from bs4 import BeautifulSoup
 
+from getGeotiff import *
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select
@@ -17,6 +19,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 import selenium.webdriver.support.expected_conditions as EC
 import selenium.webdriver.support.ui as ui 
+
 
 
 station = {'普陀':'putuo','上海第十五制药厂':'drug15',\
@@ -35,6 +38,45 @@ station_db = {'十五厂':'上海第十五制药厂', \
               '静安监测站':'静安'}
 #  数值单位：μg/m3(CO为mg/m3)
 # 可直接爬取静态网页，但我们选择使用selenium模拟浏览器工作
+
+
+# 根据getTiffbyclass中target的不同进行不同指标value的获取再相应的进行绘制
+# 2代表AQI 4为PM2.5 5为PM10 类推为 CO NO2 O3 SO2 这里我们用一个字典
+target_dic = {"AQI":2, "PM25":4, "PM10":5, 
+              "CO":6, "NO2":7, "O3":8, "SO2":9}
+
+
+
+def mkdir(path):
+    # 去除首位空格
+    path=path.strip()
+    # 去除尾部 \ 符号
+    path=path.rstrip("\\")
+ 
+    # 判断路径是否存在
+    # 存在     True
+    # 不存在   False
+    isExists=os.path.exists(path)
+ 
+    # 判断结果
+    if not isExists:
+        # 如果不存在则创建目录
+        # 创建目录操作函数
+        os.makedirs(path) 
+ 
+        # print path+' 创建成功'
+        return True
+    else:
+        # 如果目录存在则不创建，并提示目录已存在
+        # print path+' 目录已存在'
+        return False
+
+
+def getTime():
+    return (datetime.datetime.now()-datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")
+
+
+
 
 
 # 一直等待某元素可见，默认超时10秒
@@ -95,7 +137,8 @@ def StoreDB(insertlst):
         return None
     
     # tstime = time.strftime("%Y-%m-%d %H", time.localtime())
-    tstime = (datetime.datetime.now()-datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H")
+    tstime = getTime()
+    
     insertlst = [tstime] + insertlst
     for i,con in enumerate(insertlst):
         if (i not in (0,1,3)) and (con != "_") and con:
@@ -137,7 +180,7 @@ def MyTimer():
         time.sleep(1)
     pass
 
-#注意，我们main函数里面的内容不是只执行一次的，二是每一小时都执行的，
+#注意，我们main函数里面的内容不是只执行一次的，而是每一小时都执行的，
 #所以要封装在一个单独的函数里面定时执行
 def Craw():
     options = Options()
@@ -147,6 +190,17 @@ def Craw():
     print(2)
     GetPage(driver)
     driver.quit() #注意一定释放浏览器资源 不然电脑会爆炸(●'◡'●)
+    
+    #在我们爬取完数据后，就要根据数据生成IDW插值的tiff图啦!
+    timenow = getTime()
+    for idx in target_dic.keys():
+        t = target_dic[idx]
+        mkdir("../webgis/static/tiffDocument/"+timenow) #先创建路径
+        cube_tif = "../webgis/static/tiffDocument/"+timenow+"/"+idx+" "+timenow+".tif"
+        output_raster="../webgis/static/tiffDocument/"+timenow+"/"+idx+" "+timenow+"_warp.tif"
+        input_shape = r"../webgis/static/tiffDocument/上海市/上海市.shp"
+        getTiffbyclass(inpath,cube_tif,output_raster,input_shape,target=t)
+        print(idx+" is drawed!!! (●'◡'●)")
     
 
 if __name__ == '__main__':
