@@ -106,7 +106,7 @@ let entertain = L.icon({
     // popupAnchor:[]
 })
 let job = L.icon({
-    iconUrl: '../static/Markers/工作.png',
+    iconUrl: '../static/Markers/工作场所.png',
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     // popupAnchor:[]
@@ -282,6 +282,13 @@ function syncHighlight(di, marker, flg) {
     }
 }
 
+function scrolltoDiv(div,emarker) {
+    let scroll_offset = $(div.innerName).offset();
+    console.log(scroll_offset)
+    $(".el-drawer.rtl").animate({
+        scrollTop: scroll_offset.top //让body的scrollTop等于pos的top，就实现了滚动 
+    }, 1000);
+}
 
 
 
@@ -1000,6 +1007,7 @@ function onLoad() {
                 this.show = !this.show
                 console.log(this.show)
                 if (this.show) {
+                    $("#class-lable").show(500)
                     axios.post("/stationdata", { aiming: "right" })
                         .then(function (response) {
                             stationinfo = response.data
@@ -1013,6 +1021,7 @@ function onLoad() {
 
                     // stationinfo每次点击都会更新，每次关闭站点显示都会空置
                 } else if (!this.show) {
+                    $("#class-lable").hide(500)
                     for (let i = 0; i < markers.length; i++) {
                         markers[i].remove()
                         divmarkers[i].remove()
@@ -1144,6 +1153,7 @@ function onLoad() {
 
                                         var emarker = L.marker([eventlat, eventlon], { icon: theeventicon, draggable: false })
                                         emarker.innerID = index
+                                        emarker.contentid = pcontentid
 
 
                                         emarker.on({
@@ -1157,6 +1167,7 @@ function onLoad() {
                                             },
                                             'click': function (e) {
                                                 mymap.flyTo(this.getLatLng(), zoom = 13, options = { duration: 0.8 })
+                                                scrolltoDiv(speDomDiv, emarker)
                                             }
                                         })
 
@@ -1206,7 +1217,7 @@ function onLoad() {
                     mymap.off('click');
                 }
             },
-            showIDW(){
+            showIDW() {
                 if (!this.isReadtif) {
 
                     selecttiff.selectDialogVisible = true;
@@ -1552,39 +1563,39 @@ function onLoad() {
     })
 
     const selecttiff = new Vue({
-        el:"#selecttif",
-        data:{
-            selectDialogVisible:false,
+        el: "#selecttif",
+        data: {
+            selectDialogVisible: false,
             options: [{
                 value: 'AQI',
                 label: 'AQI'
-              }, {
+            }, {
                 value: 'PM25',
                 label: 'PM25'
-              }, {
+            }, {
                 value: 'PM10',
                 label: 'PM10'
-              }, {
+            }, {
                 value: 'CO',
                 label: 'CO'
-              }, {
+            }, {
                 value: 'NO2',
                 label: 'NO2'
-              }, {
+            }, {
                 value: 'O3',
                 label: 'O3'
-              }, {
+            }, {
                 value: 'SO2',
                 label: 'SO2'
-              }],
-              value: ''
+            }],
+            value: ''
         },
-        methods:{ 
+        methods: {
             cancel() {
                 this.selectDialogVisible = false
 
             },
-            selectgTif(){
+            selectgTif() {
                 // console.log(this.value)
                 let idx = this.value
                 this.cancel()
@@ -1592,7 +1603,7 @@ function onLoad() {
                 $.ajax({
                     url: "/getTiffurl",
                     methods: "get",
-                    data: {idx:idx},
+                    data: { idx: idx },
                     // contentType: 'application/json',
                     success: function (response) {
                         let resdata = JSON.parse(response)
@@ -1600,9 +1611,11 @@ function onLoad() {
                             console.log(resdata)
                             tiffread.tifurl = resdata.contents.tifurl
                             console.log(tiffread.tifurl)
-                            tiffread.displayMinmax = [resdata.contents.min,resdata.contents.max]
+                            tiffread.displayMinmax = [resdata.contents.min, resdata.contents.max]
                             console.log(tiffread.displayMinmax)
-                            tiffread.readTiff()
+                            
+                            tiffread.readgTiff(idx)
+                            
                         }
                         else {
                             console.log(resdata.error);
@@ -1624,19 +1637,20 @@ function onLoad() {
             tiffDialogVisible: false,
             tifurl: "",   //"http://localhost:5555/static/MOD04_3KM01AVG.tif"
             urllst: [],
-            displayMinmax:[0,256],
+            displayMinmax: [0, 256],
             marks: {
                 0: '0',
                 64: '64',
                 128: '128'
-            }
+            },
+            pollutant:' '
         },
         methods: {
             cancel() {
                 this.tiffDialogVisible = false
 
             },
-            readgTiff() {
+            readgTiff(idx) {
                 // GeoTIFF file URL. Currently only EPSG:4326 files are supported
                 // Can be null if sourceFunction is GeoTIFF.fromArrayBuffer
                 const url =
@@ -1703,6 +1717,8 @@ function onLoad() {
                 })
                 tiflayer.addTo(mymap);
                 let popup;
+                this.pollutant = idx
+                const _this = this
                 mymap.on("click", function (e) {
                     // if (this.isReadtif)
                     {
@@ -1712,8 +1728,9 @@ function onLoad() {
                             popup.setLatLng([e.latlng.lat, e.latlng.lng]);
                         }
                         const value = tiflayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
+                        const idx = _this.pollutant
                         popup
-                            .setContent(`Value at this point (experimental/buggy): ${value}`)
+                            .setContent(`${idx} pollutant-concentration/index value at this point (experimental/buggy): ${value}`)
                             .openOn(mymap);
                     }
 

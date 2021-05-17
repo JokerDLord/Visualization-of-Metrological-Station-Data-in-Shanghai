@@ -358,8 +358,8 @@ def getTiffurl():
     ds = gdal.Open(tifpath) 
     bd = ds.GetRasterBand(1)
     data = bd.ReadAsArray()
-    content_dic['min'] = np.amin(data)
-    content_dic['max'] = np.amax(data)
+    content_dic['min'] = np.amin(data[np.nonzero(data)])
+    content_dic['max'] = np.amax(data[np.nonzero(data)])
 
     return json.dumps({'success': True, 'contents': content_dic})
 

@@ -41,7 +41,7 @@
 <body onLoad="onLoad()">
   <div id="basemap" class="base1">
     <!-- 定义一个站点label条 -->
-    <div class="aqi-labels" id="class-lable" v-cloak>
+    <div class="aqi-labels" id="class-lable" v-cloak style="display: none;">
       <table>
         <tbody>
           <tr>
@@ -159,7 +159,7 @@
   <!-- 定义一个插值数据显示的对话框 -->
   <el-dialog title="插值数据显示" id="selecttif" :visible.sync="selectDialogVisible" width="20%" center>
     <span  style="text-align: center; vertical-align: middle;line-height:50px ;">请选择一个指标进行显示</span><br>
-    <el-select v-model="value" placeholder="指标">
+    <el-select v-model="value" placeholder="指标3">
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -198,7 +198,7 @@
     <br>
     <span slot="footer" class="dialog-footer" style="text-align: center; vertical-align: middle;">
       <el-button @click="cancel">取 消</el-button>
-      <el-button type="primary" @click="readgTiff">读 取</el-button>
+      <el-button type="primary" @click="readgTiff(' ')">读 取</el-button>
     </span>
   </el-dialog>
 
@@ -348,7 +348,7 @@
           <el-input type="textarea" v-model="ruleForm.eventRecor" style="min-height: 40px;"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')" size="small">添加事件</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" size="small">添加兴趣点</el-button>
           <el-button @click="Dlocation('ruleForm')" size="small">定位</el-button>
           <el-button @click="canceladd" size="small">取消</el-button>
         </el-form-item>
